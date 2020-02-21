@@ -1,0 +1,40 @@
+// Import all dependencies & middleware here
+import express from 'express';
+import { userController, loginController } from './controller';
+import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { authenticate } from './middleware/authenticate';
+import { authorise } from './middleware/authorize';
+
+dotenv.config();
+
+// Init an Express App.
+const app = express();
+
+app.disable('x-powered-by');
+
+// Use your dependencies here
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(
+  cors({
+    origin: [`${process.env.FRONT_URL}`, 'http://localhost:3000', 'https://mypage.com'],
+    credentials: true,
+}));
+app.use(cookieParser());
+
+// use all controllers(APIs) here
+const apiRouter = express.Router();
+app.use('/api', apiRouter);
+apiRouter.use('/users', [authenticate, authorise(["admin", "member"])], userController);
+apiRouter.use('/login', loginController);
+
+// Start Server here
+app.listen(process.env.PORT, () => {
+  //    mongoose.connect("mongodb://localhost/test").then(() => {
+  //     console.log(`Conneted to mongoDB at port 27017`);
+  //   });
+  console.log(`Server is running on port ${process.env.PORT}!`);
+});
