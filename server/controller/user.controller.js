@@ -1,5 +1,4 @@
 import express from 'express';
-import { authenticate } from '../middleware/authenticate';
 
 const userController = express.Router();
 
@@ -9,6 +8,7 @@ userController.get('/', (req, res) => {
   });
 });
 
+// @TODO send to react FE
 userController.get('/me', (req, res) => {
   res.status(200).json({
     status: 'your profile',

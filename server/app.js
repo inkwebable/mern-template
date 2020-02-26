@@ -7,20 +7,19 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { authenticate } from './middleware/authenticate';
 import { authorise } from './middleware/authorize';
+import helmet from 'helmet';
 
 dotenv.config();
 
-// Init an Express App.
+
 const app = express();
 
-app.disable('x-powered-by');
-
-// Use your dependencies here
+app.use(helmet());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(
   cors({
-    origin: [`${process.env.FRONT_URL}`, 'http://localhost:3000', 'https://mypage.com'],
+    origin: [`${process.env.FRONT_URL}`, 'http://localhost:3000'],
     credentials: true,
 }));
 app.use(cookieParser());

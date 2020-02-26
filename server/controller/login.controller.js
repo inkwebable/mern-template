@@ -53,6 +53,7 @@ const login = async (req, res) => {
       // const refreshToken = generateRefreshToken(user.id, user.username, user.role);
       // refreshTokens.push(refreshToken);
 
+      // could return the token if desired - NOT SAFE TO STORE IN LOCAL STORAGE
       res.cookie('token', token, {
         expires: new Date(Date.now() + expiration),
         secure: false, // set to true if your using https
@@ -60,7 +61,7 @@ const login = async (req, res) => {
       });
 
       // carry out other actions after generating token like sending a response);
-      res.redirect('/users/me');
+      res.status(200).json({message: 'success'})
     } else {
       res.send('Username or password incorrect');
     }
