@@ -11,7 +11,6 @@ import helmet from 'helmet';
 
 dotenv.config();
 
-
 const app = express();
 
 app.use(helmet());
@@ -30,10 +29,16 @@ app.use('/api', apiRouter);
 apiRouter.use('/users', [authenticate, authorise(["admin", "member"])], userController);
 apiRouter.use('/login', loginController);
 
+console.log(process.env.MONGODB_URL);
+
 // Start Server here
 app.listen(process.env.PORT, () => {
-  //    mongoose.connect("mongodb://localhost/test").then(() => {
-  //     console.log(`Conneted to mongoDB at port 27017`);
-  //   });
+    if(!!process.env.MONGODB_URL) {
+      mongoose.connect(process.env.MONGODB_URL, {useNewUrlParser: true, useCreateIndex: true}).then(() => {
+        console.log(`Conneted to mongoDB at port 27017`);
+      }).catch(err => {
+        console.log(err);
+      });
+    }
   console.log(`Server is running on port ${process.env.PORT}!`);
 });
