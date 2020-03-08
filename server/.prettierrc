@@ -6,5 +6,6 @@
   "singleQuote": true,
   "trailingComma": "all",
   "endOfLine": "auto",
-  "prefer-default-export": false
+  "prefer-default-export": false,
+  "no-multiple-empty-lines": [{"max": 2 }]
 }
