@@ -1,6 +1,7 @@
 import express from 'express';
 import { generateToken, generateRefreshToken } from '../generateToken';
 import User from '../models/user';
+import catchAsync from '../utils/CatchAsync';
 
 const loginController = express.Router();
 
@@ -32,7 +33,7 @@ const loginController = express.Router();
 // @TODO  handle refresh
 const refreshTokens = [];
 
-const login = async (req, res) => {
+const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -44,6 +45,8 @@ const login = async (req, res) => {
     // });
 
     const user = await User.findByCredentials({ email, password });
+
+    console.log(email, password, user);
 
     if (user) {
       const expiration = process.env.DB_ENV === 'testing' ? 100 : 604800000;
@@ -65,9 +68,10 @@ const login = async (req, res) => {
     }
     return res.send('Username or password incorrect');
   } catch (err) {
-    return res.status(500).json(err.toString());
+    console.log('caught', err);
+    return res.status(400).json(err.toString());
   }
-};
+});
 
 loginController.get('', (req, res) => {
   res.send('hi');
