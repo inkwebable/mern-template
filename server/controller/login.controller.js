@@ -1,6 +1,6 @@
 import express from 'express';
 import { generateToken, generateRefreshToken } from '../generateToken';
-import { User } from '../models';
+import User from '../models/user';
 
 const loginController = express.Router();
 
@@ -48,7 +48,7 @@ const login = async (req, res) => {
     if (user) {
       const expiration = process.env.DB_ENV === 'testing' ? 100 : 604800000;
 
-      const token = generateToken(user.id, user.email, user.role);
+      const token = generateToken(user.id, user.role);
 
       // const refreshToken = generateRefreshToken(user.id, user.username, user.role);
       // refreshTokens.push(refreshToken);

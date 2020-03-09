@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { User } from '../models';
+import User from '../models/user';
 
 dotenv.config();
 
@@ -30,7 +30,7 @@ dotenv.config();
 // ];
 
 const authenticate = async (req, res, next) => {
-  const token = req.cookies['token'];
+  const { token } = req.cookies;
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);

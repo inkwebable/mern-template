@@ -4,8 +4,9 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
+import { loginController, signupController, userController, usersController } from './controller';
 import { authenticate } from './middleware/authenticate';
-import { userController, loginController, signupController } from './controller';
+import { authorise } from './middleware/authorize';
 
 dotenv.config();
 
@@ -25,8 +26,8 @@ app.use(cookieParser());
 // use all controllers(APIs) here
 const apiRouter = express.Router();
 app.use('/api', apiRouter);
-// apiRouter.use('/users', [authenticate, authorise(['admin', 'member'])], userController);
-apiRouter.use('/users', [authenticate], userController);
+apiRouter.use('/users', [authenticate], usersController);
+apiRouter.use('/user', [authenticate, authorise(['admin', 'member'])], userController);
 apiRouter.use('/login', loginController);
 apiRouter.use('/signup', signupController);
 
@@ -38,7 +39,7 @@ app.listen(process.env.PORT, () => {
     mongoose
       .connect(process.env.MONGODB_URL, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false })
       .then(() => {
-        console.log(`Conneted to mongoDB`);
+        console.log(`Connected to mongoDB`);
       })
       .catch(err => {
         console.log(err);

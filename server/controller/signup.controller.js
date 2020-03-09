@@ -1,6 +1,6 @@
 import express from 'express';
 import { generateToken } from '../generateToken';
-import { User } from '../models';
+import User from '../models/user';
 
 const signupController = express.Router();
 
@@ -10,7 +10,7 @@ const signup = async (req, res) => {
   try {
     const user = new User(userReq);
     await user.save();
-    const token = generateToken(user.id, user.username, user.role);
+    const token = generateToken(user.id, user.role);
     const expiration = process.env.DB_ENV === 'testing' ? 100 : 604800000;
     res.cookie('token', token, {
       expires: new Date(Date.now() + expiration),

@@ -1,6 +1,5 @@
 import express from 'express';
-import { User } from '../models';
-import { authorise } from '../middleware/authorize';
+import User from '../models/user';
 
 const userController = express.Router();
 
@@ -16,14 +15,14 @@ userController.get('/', (req, res) => {
   }
 });
 
-userController.patch('/update/:id', (req, res) => {
+userController.patch('/update', (req, res) => {
   // @TODO validate params
-  if (!req.body.name) {
+  if (!req.body.name || !req.user) {
     return res.status(422).send({ error: 'missing parameter(s)' });
   }
 
   try {
-    User.findOneAndUpdate({ _id: req.params.id }, { name: req.body.name }, { new: true, runValidators: true })
+    User.findOneAndUpdate({ _id: req.user.id }, { name: req.body.name }, { new: true, runValidators: true })
       .then(data => {
         return res.status(202).json(data);
       })
@@ -34,26 +33,6 @@ userController.patch('/update/:id', (req, res) => {
       });
   } catch (err) {
     return res.status(400).send(err);
-  }
-
-  return res.status(400);
-});
-
-userController.delete('/delete/:id', [authorise(['admin'])], (req, res) => {
-  if (req.user.id === req.params.id) {
-    return res.json({ message: 'Cannot delete self' });
-  }
-
-  try {
-    User.findOneAndDelete({ _id: req.params.id })
-      .then(data => {
-        return res.json(data);
-      })
-      .catch(err => {
-        return res.status(400).send(err);
-      });
-  } catch (err) {
-    res.status(401).send(err);
   }
 
   return res.status(400);

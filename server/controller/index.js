@@ -1,5 +1,6 @@
-import userController from './user.controller';
 import loginController from './login.controller';
 import signupController from './signup.controller';
+import userController from './user.controller';
+import usersController from './users.controller';
 
-export { userController, loginController, signupController };
+export { loginController, signupController, userController, usersController };
