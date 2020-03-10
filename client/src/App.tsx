@@ -1,24 +1,30 @@
 import { GlobalStyles } from 'assets/styles';
+import { AppHeader } from 'modules/appHeader';
+import { SessionContext } from 'modules/auth/session/sessionContext';
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { AppRouter } from './app/app-router';
-import { AppHeader } from './modules/header/header';
+import { hasSession } from './modules/auth/session';
 
-const AppContainer = styled.div`
+const AppContainer = styled.main`
   text-align: center;
 `;
 
 const App = (): JSX.Element => {
+  const [session, updateSession] = React.useState(hasSession());
+
   return (
     <>
       <GlobalStyles />
       <Router>
-        <AppHeader />
-        <AppContainer>
-          <AppRouter />
-        </AppContainer>
+        <SessionContext.Provider value={{ session: session, updateSession }}>
+          <AppHeader />
+          <AppContainer>
+            <AppRouter />
+          </AppContainer>
+        </SessionContext.Provider>
       </Router>
     </>
   );

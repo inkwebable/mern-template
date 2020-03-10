@@ -16,4 +16,8 @@ export const forms = `
     font-size: ${fontSizes.m};
     font-weight: 500;
   }
+  
+  input {
+    color: ${colors.textDark}
+  }
 `;

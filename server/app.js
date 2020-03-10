@@ -8,6 +8,7 @@ import { loginController, signupController, userController, usersController } fr
 import { authenticate } from './middleware/authenticate';
 import { authorise } from './middleware/authorize';
 import AppError from './utils/AppError';
+import logoutController from './controller/logout.controller';
 
 dotenv.config();
 
@@ -61,6 +62,7 @@ app.use('/api', apiRouter);
 apiRouter.use('/users', [authenticate], usersController);
 apiRouter.use('/user', [authenticate, authorise(['admin', 'member'])], userController);
 apiRouter.use('/login', loginController);
+apiRouter.use('/logout', logoutController);
 apiRouter.use('/signup', signupController);
 
 app.all('*', (req, res, next) => {

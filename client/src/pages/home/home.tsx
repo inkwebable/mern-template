@@ -1,14 +1,22 @@
-import { LoginForm } from 'modules/loginForm/login';
-import React from 'react';
+import { SessionContext } from 'modules/auth/session';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 
 import { PageTitle1, PageTitle2 } from '../../modules/page/pages.styled';
 
-// import { ContainerStyled } from '@modules/core/container';
-// import { FlexContainer } from '@modules/core/flex-container';
+export const HomePage = (): JSX.Element => {
+  const sessionContext = useContext(SessionContext);
 
-export const HomePage = (): JSX.Element => (
-  <>
-    <PageTitle1>Home Page</PageTitle1>
-    <LoginForm />
-  </>
-);
+  return (
+    <>
+      <PageTitle1>Home Page</PageTitle1>
+      {sessionContext.session ? (
+        <p>You are logged in.</p>
+      ) : (
+        <p>
+          You can also login <Link to="/login">here</Link>
+        </p>
+      )}
+    </>
+  );
+};

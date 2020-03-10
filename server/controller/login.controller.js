@@ -64,7 +64,7 @@ const login = catchAsync(async (req, res) => {
       });
 
       // carry out other actions after generating token like sending a response);
-      return res.status(200).json({ message: 'success' });
+      return res.status(200).json({ role: user.role });
     }
     return res.send('Username or password incorrect');
   } catch (err) {

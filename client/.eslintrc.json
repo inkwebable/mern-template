@@ -29,7 +29,10 @@
         "simple-import-sort"
     ],
     "rules": {
-        "simple-import-sort/sort": "error"
+        "simple-import-sort/sort": "error",
+        "react/prop-types": 0,
+        "@typescript-eslint/no-empty-function": "off",
+        "@typscript-eslint/explicit-function-return-type": "off"
     },
     "settings":  {
         "react":  {

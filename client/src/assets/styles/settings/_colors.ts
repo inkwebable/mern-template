@@ -27,12 +27,14 @@ const BubbleBorder = '#d5e1eb';
 const TableEmptyCell = '#cccccc';
 const White = '#ffffff';
 const LightBg = White;
+const DarkBg = '#282c34';
 const Outline = '#4d90fe';
 const Disabled = '#e4e4e4';
 const DisabledText = '#cecece';
 
 export const colors = {
-  bg: White,
+  lightBg: LightBg,
+  darkBg: DarkBg,
   textLight: TextLight,
   textDark: TextDark,
   border: Border,
