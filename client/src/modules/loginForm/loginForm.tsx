@@ -3,7 +3,7 @@ import React, { FunctionComponent, useContext, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { SessionContext } from '../auth/session';
-import { LoginButton } from './loginForm.styled';
+import { FormGroup, LoginButton } from './loginForm.styled';
 
 export const LoginForm: FunctionComponent = () => {
   const sessionContext = useContext(SessionContext);
@@ -46,11 +46,11 @@ export const LoginForm: FunctionComponent = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
+      <FormGroup>
         <label>Username: </label>
         <input type="text" required value={email} onChange={(e: React.FormEvent<HTMLInputElement>) => setEmail(e.currentTarget.value)} />
-      </div>
-      <div>
+      </FormGroup>
+      <FormGroup>
         <label>Password: </label>
         <input
           type="password"
@@ -58,7 +58,7 @@ export const LoginForm: FunctionComponent = () => {
           value={password}
           onChange={(e: React.FormEvent<HTMLInputElement>) => setPassword(e.currentTarget.value)}
         />
-      </div>
+      </FormGroup>
       <LoginButton type="submit" disabled={isSubmitting}>
         Login
       </LoginButton>

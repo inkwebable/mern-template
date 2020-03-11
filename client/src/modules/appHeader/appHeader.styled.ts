@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { colors, fontSizes } from '../../assets/styles/settings';
+
 export const AppContainerHeader = styled.header`
   display: flex;
   flex-direction: column;
@@ -16,24 +18,36 @@ export const AppContainerHeader = styled.header`
 `;
 
 export const AppTitle = styled.h1`
-  font-size: 1.5em;
+  font-size: ${fontSizes.xxl};
+
+  a {
+    color: white;
+
+    &:focus,
+    &:hover,
+    &:visited,
+    &:link,
+    &:active {
+      color: ${colors.white};
+      text-decoration: none;
+    }
+  }
 `;
 
 export const StyledLink = styled(Link)`
   text-decoration: none;
+`;
+
+export const AppLink = styled.a`
+  color: #61dafb;
 
   &:focus,
   &:hover,
   &:visited,
   &:link,
   &:active {
-    color: inherit;
-    text-decoration: none;
+    color: ${colors.primary};
   }
-`;
-
-export const AppLink = styled.a`
-  color: #61dafb;
 `;
 
 export const AppLogo = styled.img`

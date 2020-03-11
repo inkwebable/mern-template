@@ -31,6 +31,8 @@ const DarkBg = '#282c34';
 const Outline = '#4d90fe';
 const Disabled = '#e4e4e4';
 const DisabledText = '#cecece';
+// const Primary = '#61dafb';
+const Primary = '#2fcefa';
 
 export const colors = {
   lightBg: LightBg,
@@ -46,7 +48,7 @@ export const colors = {
   warning: Warning,
   readonly: Readonly,
   hr: Border,
-  White,
+  white: White,
   alerts: {
     success: {
       bg: SuccessBg,
@@ -69,9 +71,10 @@ export const colors = {
     border: TableBorder,
     emptyCell: TableEmptyCell,
   },
-  Outline,
-  Disabled,
-  DisabledText,
+  outline: Outline,
+  disabled: Disabled,
+  disabledText: DisabledText,
   validLight: ValidLight,
   bubbleBorder: BubbleBorder,
+  primary: Primary,
 } as any;

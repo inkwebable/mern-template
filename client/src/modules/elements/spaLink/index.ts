@@ -1,0 +1,1 @@
+export { StyledSpaLink } from './link';

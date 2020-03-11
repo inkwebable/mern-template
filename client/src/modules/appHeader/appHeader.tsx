@@ -1,8 +1,10 @@
 import { SessionContext } from 'modules/auth/session';
 import React, { FunctionComponent } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import logo from '../../assets/images/logo.svg';
+import { colors } from '../../assets/styles/settings';
+import { StyledSpaLink } from '../elements/spaLink';
 import { LoginForm } from '../loginForm';
 import { LogoutForm } from '../logoutform';
 import { AppContainerHeader, AppLink, AppLogo, AppTitle, StyledLink } from './appHeader.styled';
@@ -24,7 +26,24 @@ export const AppHeader: FunctionComponent = () => {
         https://github.com/inkwebable/mern
       </AppLink>
       <SessionContext.Consumer>
-        {({ session }): JSX.Element | false => (!session && !isLoginScreen() ? <LoginForm /> : session && <LogoutForm />)}
+        {({ session }): JSX.Element | false =>
+          !session && !isLoginScreen() ? (
+            <>
+              <br />
+              <StyledSpaLink to="/login" color={colors.white} decoration="underline">
+                {' '}
+                Login
+              </StyledSpaLink>
+            </>
+          ) : (
+            session && (
+              <>
+                <br />
+                <LogoutForm />
+              </>
+            )
+          )
+        }
       </SessionContext.Consumer>
     </AppContainerHeader>
   );
