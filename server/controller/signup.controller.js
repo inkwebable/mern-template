@@ -1,11 +1,10 @@
 import express from 'express';
-import { generateToken } from '../generateToken';
+import { generateToken } from '../utils/generateToken';
 import User from '../models/user';
 
 const signupController = express.Router();
 
 const signup = async (req, res) => {
-  // const { email, username, password } = req.body;
   const userReq = { role: 'member', ...req.body };
   try {
     const user = new User(userReq);
@@ -18,7 +17,6 @@ const signup = async (req, res) => {
       httpOnly: true,
     });
 
-    // carry out other actions after generating token like sending user to dash/home);
     return res.status(201).json({ message: 'success' });
   } catch (err) {
     return res.status(500).json(err.toString());

@@ -36,7 +36,6 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-// Because of lexical scoping, we cannot use arrow functions for these three methods
 // middleware
 UserSchema.pre('save', function() {
   if (this.isModified('password')) {

@@ -17,7 +17,7 @@ usersController.get('/', [authorise(['admin'])], async (req, res) => {
 });
 
 usersController.patch('/update/:id', [authorise(['admin'])], (req, res) => {
-  // @TODO validate params
+  // @TODO validate params or let the model handle it
   if (!req.body.name) {
     return res.status(422).send({ error: 'missing parameter(s)' });
   }

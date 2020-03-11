@@ -3,31 +3,6 @@ import User from '../models/user';
 
 dotenv.config();
 
-// @TODO replace
-// const users = [
-//   {
-//     id: 1,
-//     username: 'john',
-//     email: 'test1@gmail.com',
-//     password: 'password123admin',
-//     role: 'admin',
-//   },
-//   {
-//     id: 2,
-//     username: 'anna',
-//     email: 'test2@gmail.com',
-//     password: 'password123member',
-//     role: 'member',
-//   },
-//   {
-//     id: 3,
-//     username: 'intruder',
-//     email: 'test3@gmail.com',
-//     password: 'password123intruder',
-//     role: '',
-//   },
-// ];
-
 const authorise = (roles) => {
 
   return async (req, res, next) => {
@@ -36,10 +11,6 @@ const authorise = (roles) => {
 
     try {
       const user = await User.findOne({ _id: id });
-
-      // const user = users.find(u => {
-      //   return u.username === username && u.id === id;
-      // });
 
       if (!user) {
         throw new Error('User not found');

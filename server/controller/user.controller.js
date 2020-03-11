@@ -3,9 +3,7 @@ import User from '../models/user';
 
 const userController = express.Router();
 
-// get user resource
 userController.get('/', (req, res) => {
-  // user should be authed and available on the request
   try {
     res.status(200).json({
       user: req.user,
@@ -16,7 +14,7 @@ userController.get('/', (req, res) => {
 });
 
 userController.patch('/update', (req, res) => {
-  // @TODO validate params
+  // @TODO validate params or let the model handle it
   if (!req.body.name || !req.user) {
     return res.status(422).send({ error: 'missing parameter(s)' });
   }
