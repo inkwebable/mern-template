@@ -4,7 +4,7 @@
   "description": "inkwebable mern",
   "main": "server.js",
   "scripts": {
-    "start": "node --experimental-modules server.js",
+    "start": "node -r esm server.js",
     "server": "nodemon -r esm server.js",
     "client": "npm run start --prefix client",
     "devold": "nodemon -r esm server.js",
