@@ -23,7 +23,7 @@ export const LoginForm: FunctionComponent = () => {
     setIsSubmitting(true);
 
     axios
-      .post('http://localhost:5001/api/login', { email, password }, { withCredentials: true })
+      .post('/api/login', { email, password }, { withCredentials: true })
       .then(res => {
         console.log(res);
         if (res.status === 200) {

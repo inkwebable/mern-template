@@ -13,7 +13,7 @@ export const LogoutForm: FunctionComponent = () => {
     setIsSubmitting(true);
 
     axios
-      .get('http://localhost:5001/api/logout', { withCredentials: true })
+      .get('/api/logout', { withCredentials: true })
       .then(res => {
         console.log(res);
         if (res.status === 200) {
