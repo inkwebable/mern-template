@@ -1,6 +1,6 @@
-import { GlobalStyles } from 'assets/styles';
-import { AppHeader } from 'modules/appHeader';
-import { SessionContext } from 'modules/auth/session/sessionContext';
+import { GlobalStyles } from './assets/styles';
+import { AppHeader } from './modules/appHeader';
+import { SessionContext } from './modules/auth/session';
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import styled from 'styled-components';

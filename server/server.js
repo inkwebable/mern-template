@@ -9,17 +9,20 @@ import { authenticate } from './middleware/authenticate';
 import { authorise } from './middleware/authorize';
 import AppError from './utils/AppError';
 import logoutController from './controller/logout.controller';
+import keys from './config/keys';
 
 dotenv.config();
 
 const app = express();
+
+console.log('express started', process.env.NODE_ENV);
 
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
-    origin: [`${process.env.FRONT_URL}`, 'http://localhost:3000'],
+    origin: [`${keys.clientUrl}`, 'http://localhost:3000'],
     credentials: true,
   }),
 );
@@ -80,13 +83,13 @@ app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
-console.log(process.env.MONGODB_URL);
+console.log(keys.mongoUrl);
 
 // Start Server here
-app.listen(process.env.PORT, () => {
-  if (process.env.MONGODB_URL) {
+app.listen(keys.port, () => {
+  if (keys.mongoUrl) {
     mongoose
-      .connect(process.env.MONGODB_URL, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false })
+      .connect(keys.mongoUrl, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false })
       .then(() => {
         console.log(`Connected to mongoDB`);
       })
@@ -94,5 +97,5 @@ app.listen(process.env.PORT, () => {
         console.log(err);
       });
   }
-  console.log(`Server is running on port ${process.env.PORT}!`);
+  console.log(`Server is running on port ${keys.port}!`);
 });
