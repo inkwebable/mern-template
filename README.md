@@ -23,7 +23,6 @@ To get started:
 - add your mongo account details 
 
 ```javascript
-cd server
 npm run dev
 ```
 
