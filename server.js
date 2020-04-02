@@ -62,6 +62,7 @@ app.use((err, req, res, next) => {
 
 // use all controllers(APIs) here
 const apiRouter = express.Router();
+
 app.use('/api', apiRouter);
 apiRouter.use('/users', [authenticate], usersController);
 apiRouter.use('/user', [authenticate, authorise(['admin', 'member'])], userController);
@@ -69,7 +70,7 @@ apiRouter.use('/login', loginController);
 apiRouter.use('/logout', logoutController);
 apiRouter.use('/signup', signupController);
 
-app.all('*', (req, res, next) => {
+// app.all('*', (req, res, next) => {
   // res.status(404).json({
   //   status: 'fail',
   //   message: `Can't find ${req.originalUrl} on this server!`
@@ -81,12 +82,12 @@ app.all('*', (req, res, next) => {
   //   //
   //   // next(err);
 
-  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
-});
+  // next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+// });
 
 console.log(keys.mongoUrl);
 
-if( process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
   // express will server up prod assets
   // like main.js or main.css from the dir given below
   app.use(express.static('client/build'));
