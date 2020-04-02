@@ -85,7 +85,7 @@ apiRouter.use('/signup', signupController);
   // next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 // });
 
-console.log(keys.mongoUrl);
+console.log('mongoUrl', keys.mongoUrl);
 
 if (process.env.NODE_ENV === 'production') {
   // express will server up prod assets
