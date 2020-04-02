@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
+import path from 'path';
 import { loginController, signupController, userController, usersController } from './controller';
 import { authenticate } from './middleware/authenticate';
 import { authorise } from './middleware/authorize';
@@ -84,6 +85,17 @@ app.all('*', (req, res, next) => {
 });
 
 console.log(keys.mongoUrl);
+
+if( process.env.NODE_ENV === 'production') {
+  // express will server up prod assets
+  // like main.js or main.css from the dir given below
+  app.use(express.static('client/build'));
+
+  // Express will serve index.html if it don't recognise the route
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
 
 // Start Server here
 app.listen(keys.port, () => {
