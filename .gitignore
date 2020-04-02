@@ -2,17 +2,17 @@
 .idea
 
 # configs
-server/.env
+.env
 client/.env
 
 # dependencies
-server/node_modules
+/node_modules
 client/node_modules
 
 # logs
-server/npm-debug.log*
-server/yarn-debug.log*
-server/yarn-error.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 client/npm-debug.log*
 client/yarn-debug.log*
