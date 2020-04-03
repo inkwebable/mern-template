@@ -30,6 +30,7 @@ export const LoginForm: FunctionComponent = () => {
           sessionStorage.setItem('session', res.data.role);
           sessionContext.updateSession(true);
           if (isLoginScreen()) {
+            setIsSubmitting(false);
             history.push('/');
           }
         }
@@ -38,8 +39,6 @@ export const LoginForm: FunctionComponent = () => {
         console.log(err);
         sessionStorage.clear();
         sessionContext.updateSession(false);
-      })
-      .finally(() => {
         setIsSubmitting(false);
       });
   };

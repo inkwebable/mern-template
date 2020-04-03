@@ -11,7 +11,12 @@ export const HomePage = (): JSX.Element => {
     <>
       <PageTitle1>Home Page</PageTitle1>
       {sessionContext.session ? (
-        <p>You are logged in.</p>
+        <>
+          <p>You are logged in.</p>
+          <p>
+            You can see your profile <Link to="/profile">here</Link>
+          </p>
+        </>
       ) : (
         <p>
           You can also login <Link to="/login">here</Link>

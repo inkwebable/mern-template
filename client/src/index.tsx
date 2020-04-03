@@ -1,7 +1,21 @@
+import axios from 'axios';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 import App from './App';
+import getHistory from './utils/history';
+
+axios.interceptors.response.use(undefined, error => {
+  console.log('error', error.response.status, getHistory());
+  const history = getHistory();
+
+  if (error.response.status === 403) {
+    console.log('redirect 403');
+    history.push('/login');
+  }
+
+  return Promise.reject(error);
+});
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

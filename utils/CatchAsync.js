@@ -1,6 +1,11 @@
+// should rely on try catch, but just incase
 const catchAsync = fn => {
   return (req, res, next) => {
-    fn(req, res, next).catch(err => next(err));
+    // can catch & log here
+    fn(req, res, next).catch(err => {
+      console.log('catchAsync', err);
+      next(err)
+    });
   };
 };
 

@@ -32,11 +32,19 @@
         "simple-import-sort/sort": "error",
         "react/prop-types": 0,
         "@typescript-eslint/no-empty-function": "off",
-        "@typscript-eslint/explicit-function-return-type": "off"
+        "@typscript-eslint/explicit-function-return-type": "off",
+        "import/extensions": "off",
+        "react/jsx-filename-extension": [0, { "extensions": [".js", ".jsx"] }],
+        "@typescript-eslint/no-unused-vars": "off"
     },
     "settings":  {
         "react":  {
             "version":  "detect"  // Tells eslint-plugin-react to automatically detect the version of React to use
+        },
+        "import/resolver": {
+            "node": {
+                "extensions": [".js", ".jsx", ".ts", ".tsx"]
+            }
         }
     }
 }

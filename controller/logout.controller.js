@@ -6,11 +6,19 @@ const logoutController = express.Router();
 const logout = catchAsync(async (req, res) => {
   try {
     res.cookie(
-      'token',
+      '_p',
       {},
       {
-        expires: new Date(Date.now()),
-        secure: false, // set to true if your using https
+        maxAge: 0,
+        httpOnly: false,
+      },
+    );
+
+    res.cookie(
+      '_s',
+      {},
+      {
+        maxAge: 0,
         httpOnly: true,
       },
     );

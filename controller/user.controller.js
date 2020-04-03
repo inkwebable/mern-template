@@ -4,12 +4,13 @@ import User from '../models/user';
 const userController = express.Router();
 
 userController.get('/', (req, res) => {
+  console.log('get user');
   try {
-    res.status(200).json({
+    return res.status(200).json({
       user: req.user,
     });
-  } catch (err) {
-    res.status(401).send(err);
+  } catch (error) {
+    return res.status(400).json({error});
   }
 });
 

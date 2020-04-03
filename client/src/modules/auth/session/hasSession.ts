@@ -1,5 +1,8 @@
 export const hasSession = (): boolean => {
-  const valid = sessionStorage.getItem('session');
-
-  return !!(valid && valid.length);
+  if (document.cookie.split(';').some((item) => item.trim().startsWith('_p='))) {
+    console.log('has session');
+    return true;
+  }
+  console.log('no session');
+  return false;
 };

@@ -15,20 +15,19 @@ export const LogoutForm: FunctionComponent = () => {
     axios
       .get('/api/logout', { withCredentials: true })
       .then(res => {
-        console.log(res);
+        console.log('logout', res);
         if (res.status === 200) {
           sessionStorage.clear();
           sessionContext.updateSession(false);
+          setIsSubmitting(false);
         }
       })
       .catch(err => {
         console.log(err);
         sessionStorage.clear();
         sessionContext.updateSession(false);
-      })
-      .finally(() => {
         setIsSubmitting(false);
-      });
+      })
   };
 
   return (
