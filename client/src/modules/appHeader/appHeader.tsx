@@ -1,11 +1,10 @@
-import { SessionContext } from 'modules/auth/session';
 import React, { FunctionComponent } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import logo from '../../assets/images/logo.svg';
 import { colors } from '../../assets/styles/settings';
+import { SessionContext } from '../auth/session';
 import { StyledSpaLink } from '../elements/spaLink';
-import { LoginForm } from '../loginForm';
 import { LogoutForm } from '../logoutform';
 import { AppContainerHeader, AppLink, AppLogo, AppTitle, StyledLink } from './appHeader.styled';
 

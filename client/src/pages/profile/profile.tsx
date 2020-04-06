@@ -17,7 +17,6 @@ export const ProfilePage = (): JSX.Element => {
       axios
         .get('/api/user')
         .then(res => {
-          console.log('res', res);
           setUserProfile({ name: res.data.user.name });
           setloadingProfile(false);
           setloadedProfile(true);
@@ -32,5 +31,15 @@ export const ProfilePage = (): JSX.Element => {
     }
   }, [loadedProfile]);
 
-  return <>{loadedProfile ? <PageTitle1>Welcome{userProfile.name}</PageTitle1> : <p>Loading</p>}</>;
+  return (
+    <>
+      {loadedProfile
+        ? (
+          <PageTitle1>Welcome {userProfile.name}</PageTitle1>
+        )
+        : (
+          <p>Loading</p>
+        )}
+    </>
+  );
 };

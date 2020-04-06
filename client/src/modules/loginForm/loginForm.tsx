@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { FunctionComponent, useContext, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { SessionContext } from '../auth/session';
 import { FormGroup, LoginButton } from './loginForm.styled';
@@ -12,11 +12,6 @@ export const LoginForm: FunctionComponent = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const history = useHistory();
-  const location = useLocation();
-
-  const isLoginScreen = () => {
-    return location.pathname === '/login';
-  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -25,19 +20,14 @@ export const LoginForm: FunctionComponent = () => {
     axios
       .post('/api/login', { email, password }, { withCredentials: true })
       .then(res => {
-        console.log(res);
         if (res.status === 200) {
-          sessionStorage.setItem('session', res.data.role);
+          setIsSubmitting(false);
           sessionContext.updateSession(true);
-          if (isLoginScreen()) {
-            setIsSubmitting(false);
-            history.push('/');
-          }
+          history.push('/');
         }
       })
       .catch(err => {
         console.log(err);
-        sessionStorage.clear();
         sessionContext.updateSession(false);
         setIsSubmitting(false);
       });
@@ -46,12 +36,19 @@ export const LoginForm: FunctionComponent = () => {
   return (
     <form onSubmit={handleSubmit}>
       <FormGroup>
-        <label>Username: </label>
-        <input type="text" required value={email} onChange={(e: React.FormEvent<HTMLInputElement>) => setEmail(e.currentTarget.value)} />
+        <label htmlFor="email">Username:</label>
+        <input
+          id="email"
+          type="text"
+          required
+          value={email}
+          onChange={(e: React.FormEvent<HTMLInputElement>) => setEmail(e.currentTarget.value)}
+        />
       </FormGroup>
       <FormGroup>
-        <label>Password: </label>
+        <label htmlFor="password">Password:</label>
         <input
+          id="password"
           type="password"
           required
           value={password}

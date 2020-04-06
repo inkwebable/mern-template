@@ -1,8 +1,8 @@
-import { SessionContext } from 'modules/auth/session';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import { PageTitle1, PageTitle2 } from '../../modules/page/pages.styled';
+import { hasSession, SessionContext } from '../../modules/auth/session';
+import { PageTitle1 } from '../../modules/page/pages.styled';
 
 export const HomePage = (): JSX.Element => {
   const sessionContext = useContext(SessionContext);
@@ -10,7 +10,7 @@ export const HomePage = (): JSX.Element => {
   return (
     <>
       <PageTitle1>Home Page</PageTitle1>
-      {sessionContext.session ? (
+      {hasSession() ? (
         <>
           <p>You are logged in.</p>
           <p>
