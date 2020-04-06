@@ -25,7 +25,7 @@ const logout = catchAsync(async (req, res) => {
 
     return res.status(200).json({ message: 'User logged out' });
   } catch (err) {
-    console.log('caught', err);
+    console.log('logout err caught', err);
     return res.status(400).json(err.toString());
   }
 });

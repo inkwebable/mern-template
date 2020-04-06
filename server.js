@@ -4,12 +4,12 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import helmet from 'helmet';
 import path from 'path';
+
 import { loginController, signupController, userController, usersController } from './controller';
-import { authenticate } from './middleware/authenticate';
-import { authorise } from './middleware/authorize';
 // import AppError from './utils/AppError';
 import logoutController from './controller/logout.controller';
 import keys from './config/keys';
+import { authenticate, authorise } from './middleware/auth';
 
 const app = express();
 

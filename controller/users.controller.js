@@ -1,6 +1,6 @@
 import express from 'express';
 import User from '../models/user';
-import { authorise } from '../middleware/authorize';
+import { authorise } from '../middleware/auth';
 
 const usersController = express.Router();
 
@@ -23,7 +23,11 @@ usersController.patch('/update/:id', [authorise(['admin'])], (req, res) => {
   }
 
   try {
-    User.findOneAndUpdate({ _id: req.params.id }, { name: req.body.name }, { new: true, runValidators: true, fields: { password: 0 } })
+    User.findOneAndUpdate(
+      { _id: req.params.id },
+      { name: req.body.name },
+      { new: true, runValidators: true, fields: { password: 0 } },
+    )
       .then(data => {
         return res.status(202).json(data);
       })

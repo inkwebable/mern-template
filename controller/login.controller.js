@@ -2,7 +2,7 @@ import express from 'express';
 import { generateToken, generateRefreshToken } from '../utils/generateToken';
 import User from '../models/user';
 import catchAsync from '../utils/CatchAsync';
-import generateAuthCookies from "../utils/generateAuthCookies";
+import generateAuthCookies from '../utils/generateAuthCookies';
 
 const loginController = express.Router();
 
@@ -14,8 +14,6 @@ const login = catchAsync(async (req, res) => {
 
   try {
     const user = await User.findByCredentials({ email, password });
-
-    console.log(email, password, user);
 
     if (user) {
       // const expiration = process.env.DB_ENV === 'testing' ? 1000 * 60 * 30 : 1000 * 60 * 30; // expires after 30 minutes
@@ -34,13 +32,13 @@ const login = catchAsync(async (req, res) => {
       //   httpOnly: true,
       // });
 
-      // return res.send(token);
-      return res.status(200).json({ role: user.role });
+      return res.send(token);
+      // return res.status(200).json({ role: user.role });
     }
     return res.send('Username or password incorrect');
   } catch (err) {
-    console.log('caught', err);
-    return res.status(400).json(err.toString());
+    console.log('login controller caught', err);
+    return res.status(400).json({ error: err.message });
   }
 });
 

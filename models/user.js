@@ -7,10 +7,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      // validate: {
-      //   validator: username => User.doesNotExist({ name }),
-      //   message: 'Username already exists',
-      // },
     },
     email: {
       type: String,

@@ -1,18 +1,15 @@
 import jwt from 'jsonwebtoken';
-import { v1 as uuidv1} from 'uuid';
+import { v1 as uuidv1 } from 'uuid';
 import keys from '../config/keys';
 
 const generateToken = (id, role) => {
-  const token = jwt.sign({ id, role }, keys.jwtSecret, {
-    expiresIn: keys.dbEnv === 'testing' ? '1min' : '1d'
+  return jwt.sign({ id, role }, keys.jwtSecret, {
+    expiresIn: keys.dbEnv === 'testing' ? '8h' : '1h',
   });
-
-  return token;
 };
 
 const generateRefreshToken = (id, role) => {
-
-  const mockDB = { tokens: []};
+  const mockDB = { tokens: [] };
 
   // check if there are 5 or more refresh tokens,
   const userRefreshTokens = mockDB.tokens.filter(token => token.userId === id);
@@ -23,14 +20,14 @@ const generateRefreshToken = (id, role) => {
   }
 
   const refreshToken = jwt.sign({ id, role }, keys.jwtRefreshSecret, {
-    expiresIn: keys.dbEnv === 'testing' ? '1h' : '1d',
+    expiresIn: keys.dbEnv === 'testing' ? '8h' : '1h',
   });
 
   // add to db
   mockDB.tokens.push({
     id: uuidv1(),
     userId: id,
-    refreshToken
+    refreshToken,
   });
 
   return refreshToken;

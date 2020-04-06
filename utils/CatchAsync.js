@@ -4,7 +4,7 @@ const catchAsync = fn => {
     // can catch & log here
     fn(req, res, next).catch(err => {
       console.log('catchAsync', err);
-      next(err)
+      next(err);
     });
   };
 };
