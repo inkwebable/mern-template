@@ -14,6 +14,6 @@ interface FlexContainerProps {
 export const FlexContainer = styled.div<FlexContainerProps>`
   display: flex;
   flex-direction: column;
-  align-items: ${props => props.align || 'start'};
+  align-items: ${({ align }) => align || 'start'};
   justify-content: center;
 `;

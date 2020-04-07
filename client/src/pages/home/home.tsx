@@ -19,7 +19,7 @@ export const HomePage = (): JSX.Element => {
         </>
       ) : (
         <p>
-          You can also login <Link to="/login">here</Link>
+          You can login <Link to="/login">here</Link> or <Link to="signup">Register</Link> if you don't have an account
         </p>
       )}
     </>

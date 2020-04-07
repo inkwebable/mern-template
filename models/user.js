@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema(
       lowercase: true,
       validate: {
         validator: email => User.doesNotExist({ email }),
-        message: 'Email already exists',
+        message: 'Email already used.',
       },
     },
     password: {

@@ -32,8 +32,8 @@ const login = catchAsync(async (req, res) => {
       //   httpOnly: true,
       // });
 
-      return res.send(token);
-      // return res.status(200).json({ role: user.role });
+      // return res.send(token);
+      return res.status(200).json({ role: user.role });
     }
     return res.send('Username or password incorrect');
   } catch (err) {
