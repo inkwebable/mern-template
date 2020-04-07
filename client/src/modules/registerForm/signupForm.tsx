@@ -117,7 +117,6 @@ export const SignupForm: FunctionComponent = () => {
               </StyledFloatButton>
             </Form>
           )}
-
         </Formik>
       </FormContainer>
     </>

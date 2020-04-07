@@ -65,7 +65,6 @@ const authenticate = async (req, res, next) => {
     res = generateAuthCookies(tokenStr, res);
 
     req.user = user;
-    res.locals.user = user;
   } catch (err) {
     return res.status(400).send({ error: err });
   }

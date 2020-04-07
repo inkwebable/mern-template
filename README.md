@@ -1,6 +1,6 @@
 # The Porject
 
-A mern stack with basic user auth and user login/registration system. Create react app front end in TS and ExpressJS server on the back end.
+A mern stack with basic user auth and user login/registration system (no email verification). Create react app front end in TS and ExpressJS server on the back end.
 
 [A demo is hosted on Heroku here](https://frozen-ravine-16461.herokuapp.com/) 
 
@@ -38,9 +38,10 @@ Create react app, not ejected.
 
 ## The server
 
-The server runs on express. Some routes are protected and require authentication via http only cookie and some require authorisation denoted by user role. 
-There are also some user(s) endpoints for fetching, updating and deleting a user or users which are not listed here.
-For users endpoints you need to set role to "admin" when posting to user signup (must be hardcoded)
+Some routes are protected and require authentication via http only cookie and some also require authorisation denoted by user role on the user object. 
+
+There is also a *users* endpoint for fetching, updating, deleting a user or users, that are not listed here.
+For *users* endpoints you need a user with a role of "admin" (create user via postman)
 
 | verb | route | params |
 |------|-------|--------|

@@ -1,10 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
-import { PageTitle1, PageTitle2 } from '../../modules/page/pages.styled';
-
-// import { ContainerStyled } from '@modules/core/container';
-// import { FlexContainer } from '@modules/core/flex-container';
+import { PageTitle1 } from '../../modules/page/pages.styled';
 
 export const ProfilePage = (): JSX.Element => {
   const [userProfile, setUserProfile] = useState({ name: '*NAME' });

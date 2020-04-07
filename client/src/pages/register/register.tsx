@@ -1,8 +1,8 @@
 import React from 'react';
 
+import { FlexContainer } from '../../modules/layout';
 import { PageTitle1 } from '../../modules/page/pages.styled';
 import { SignupForm } from '../../modules/registerForm';
-import { FlexContainer } from '../../modules/layout';
 
 export const RegisterPage = (): JSX.Element => {
   return (

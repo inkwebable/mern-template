@@ -25,13 +25,7 @@ const login = catchAsync(async (req, res) => {
       // const refreshToken = generateRefreshToken(user.id, user.username, user.role);
       // refreshTokens.push(refreshToken);
 
-      // could return the token if desired
-      // res.cookie('token', token, {
-      //   expires: new Date(Date.now() + expiration),
-      //   secure: false, // TODO: Set to true when not on localhost
-      //   httpOnly: true,
-      // });
-
+      // @TODO do not leave this uncommented in prod
       // return res.send(token);
       return res.status(200).json({ role: user.role });
     }

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import { hasSession, SessionContext } from '../../modules/auth/session';
+import { SessionContext } from '../../modules/auth/session';
 import { PageTitle1 } from '../../modules/page/pages.styled';
 
 export const HomePage = (): JSX.Element => {
@@ -10,7 +10,7 @@ export const HomePage = (): JSX.Element => {
   return (
     <>
       <PageTitle1>Home Page</PageTitle1>
-      {hasSession() ? (
+      {sessionContext.session ? (
         <>
           <p>You are logged in.</p>
           <p>
@@ -19,7 +19,7 @@ export const HomePage = (): JSX.Element => {
         </>
       ) : (
         <p>
-          You can login <Link to="/login">here</Link> or <Link to="signup">Register</Link> if you don't have an account
+          You can login <Link to="/login">here</Link> or <Link to="signup">Register</Link> if you don&apos;t have an account
         </p>
       )}
     </>

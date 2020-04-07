@@ -6,7 +6,7 @@ dotenv.config();
 const authorise = roles => {
   return async (req, res, next) => {
     // get id from previous middleware (authenticate)
-    const { id, role } = res.locals.user;
+    const { id, role } = req.user;
 
     try {
       const user = await User.findOne({ _id: id });
