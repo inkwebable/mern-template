@@ -2,6 +2,8 @@
 
 A mern stack with basic user auth and user login/registration system. Create react app front end in TS and ExpressJS server on the back end.
 
+[A demo is hosted on Heroku here](https://frozen-ravine-16461.herokuapp.com/) 
+
 ## Getting Started
 
 Make sure you have node installed:
