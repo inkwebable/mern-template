@@ -40,6 +40,7 @@ export const LoginForm: FunctionComponent = () => {
         <input
           id="email"
           type="text"
+          placeholder="username"
           required
           value={email}
           onChange={(e: React.FormEvent<HTMLInputElement>) => setEmail(e.currentTarget.value)}
@@ -50,6 +51,7 @@ export const LoginForm: FunctionComponent = () => {
         <input
           id="password"
           type="password"
+          placeholder="password"
           required
           value={password}
           onChange={(e: React.FormEvent<HTMLInputElement>) => setPassword(e.currentTarget.value)}

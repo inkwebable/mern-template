@@ -1,7 +1,7 @@
 import { darken, lighten } from 'polished';
 import styled from 'styled-components';
 
-import { colors, fontSizes, spacers } from '../../assets/styles/settings';
+import { colors, fontSizes, rem, spacers } from '../../assets/styles/settings';
 
 export const LoginButton = styled.button`
   float: right;
@@ -22,19 +22,26 @@ export const LoginFormContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 400px;
-  padding-top: ${spacers[3]};
-  padding-bottom: ${spacers[3]};
+  width: 100%;
+  max-width: 360px;
+  padding: ${spacers[3]};
   color: white;
   background-color: ${colors.darkBg};
+  
+  form {
+    width: 100%;
+  }
 
   label {
     flex: 1 1 auto;
-    margin-right: ${spacers[3]};
+    width: ${rem(150)};
+    margin-right: ${spacers[2]};
     font-size: ${fontSizes.m};
   }
 
   input {
+    width: 100%;
+    padding: ${rem(1)};
     font-size: ${fontSizes.m};
   }
 `;

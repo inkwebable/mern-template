@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { colors, fontSizes, spacers } from '../../../assets/styles/settings';
+import { colors, fontSizes, rem, spacers } from '../../../assets/styles/settings';
 
 export const FormContainer = styled.div`
   display: flex;
@@ -24,7 +24,8 @@ export const FormContainer = styled.div`
   }
 
   input {
-  padding: ${spacers[1]}
+    width: 100%;
+    padding: ${rem(3)};
     font-size: ${fontSizes.m};
   }
 
