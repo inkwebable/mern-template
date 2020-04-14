@@ -1,6 +1,6 @@
 # The Porject
 
-A mern stack with basic user auth and user login/registration system (no email verification). Create react app front end in TS and ExpressJS server on the back end.
+A mern stack with basic user auth and user login/registration system. Create react app front end in TS and ExpressJS server on the back end.
 
 [A demo is hosted on Heroku here](https://frozen-ravine-16461.herokuapp.com/) 
 
@@ -12,10 +12,11 @@ Make sure you have node installed:
 npm install
 ```
 
-Config is held in the config folder in the root, notice the **dev** & **prod** keys.
- 
-If you don't change the mongoUrl, you will connect to a test environment @ mongodb.net
-(this will be removed in future releases)
+Config is in the config folder in the root directory. 
+
+You will need to copy **prod.js** and rename to **dev.js** and add your keys.
+
+If you don't add **mailUser** & pass information ensure **emailRegistration** is set to **false**.
 
 To start:
 ```javascript

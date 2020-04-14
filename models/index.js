@@ -1,3 +1,2 @@
-import User from './user';
-
-export { User as default };
+export { User } from './user';
+export { VerificationToken } from './verificationToken';

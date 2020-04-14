@@ -23,6 +23,10 @@ const UserSchema = new mongoose.Schema(
       required: true,
       minLength: 8,
     },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
     role: {
       type: String,
       required: true,

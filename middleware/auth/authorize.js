@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import User from '../../models/user';
+import User from '../../models/user/User';
 
 dotenv.config();
 

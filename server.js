@@ -4,10 +4,11 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import helmet from 'helmet';
 import path from 'path';
+import mongoSanitize from 'express-mongo-sanitize';
 
-import { loginController, signupController, userController, usersController } from './controller';
+import { ValidationError } from 'express-validation';
+import { loginController, logoutController, signupController, userController, usersController } from './controller';
 // import AppError from './utils/AppError';
-import logoutController from './controller/logout.controller';
 import keys from './config/keys';
 import { authenticate, authorise } from './middleware/auth';
 
@@ -25,16 +26,7 @@ app.use(
   }),
 );
 app.use(cookieParser());
-
-app.use((err, req, res, next) => {
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || 'error';
-
-  res.status(err.statusCode).json({
-    status: err.status,
-    message: err.message,
-  });
-});
+app.use(mongoSanitize());
 
 const apiRouter = express.Router();
 
@@ -44,6 +36,28 @@ apiRouter.use('/user', [authenticate, authorise(['admin', 'member'])], userContr
 apiRouter.use('/login', loginController);
 apiRouter.use('/logout', logoutController);
 apiRouter.use('/signup', signupController);
+
+app.use((err, req, res, next) => {
+  if (err instanceof ValidationError) {
+    if (err && err.details) {
+      const errs = err.details.map(errorObj => {
+        const objKeys = Object.keys(errorObj);
+        return { key: objKeys[0], message: errorObj[objKeys[0]] };
+      });
+      return res.status(err.statusCode).json({ errors: errs });
+    }
+
+    return res.status(err.statusCode).json(err);
+  }
+
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || 'error';
+
+  res.status(err.statusCode).json({
+    status: err.status,
+    message: err.message,
+  });
+});
 
 if (process.env.NODE_ENV === 'production') {
   // express will server up prod assets
@@ -58,12 +72,17 @@ if (process.env.NODE_ENV === 'production') {
 
 if (keys.mongoUrl) {
   mongoose
-    .connect(keys.mongoUrl, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false })
+    .connect(keys.mongoUrl, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+      useUnifiedTopology: true,
+    })
     .then(() => {
       console.log(`Connected to mongoDB`);
     })
     .catch(err => {
-      console.log(err);
+      console.log('mongo connection err', err);
     });
 }
 

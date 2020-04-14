@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import User from '../../models/user';
+import User from '../../models/user/User';
 import generateAuthCookies from '../../utils/generateAuthCookies';
 import keys from '../../config/keys';
 
@@ -16,7 +16,7 @@ const authenticate = async (req, res, next) => {
   let bearer;
 
   if (!(tokenPayloadCookie && tokenSignatureCookie) && !tokenHeader) {
-    return res.status(403).send('Access Denied: Missing token');
+    return res.status(403).send({ error: 'Access Denied: Missing token'});
   }
 
   if (tokenPayloadCookie && tokenSignatureCookie) {
@@ -31,7 +31,7 @@ const authenticate = async (req, res, next) => {
 
     if (arrayHeader[0] !== 'Bearer') {
       // Invalid token type error. Token should be a 'Bearer' Token
-      return res.status(403).send('Access Denied: Missing header');
+      return res.status(403).send({ message: 'Access Denied: Missing header' });
     }
 
     [bearer, tokenStr] = arrayHeader;

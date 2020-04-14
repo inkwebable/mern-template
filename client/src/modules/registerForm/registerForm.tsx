@@ -1,34 +1,26 @@
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { ErrorMessage, Field, Form, Formik, FormikErrors } from 'formik';
-import React, { FunctionComponent, useContext, useState } from 'react';
+import React, { FunctionComponent, SetStateAction, useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import * as Yup from 'yup';
 
 import { SessionContext } from '../auth/session';
 import { StyledFloatButton } from '../core/buttons';
 import { FormContainer, FormGroup } from '../core/form';
-import { StrongPasswordRegex } from '../core/validation';
+import { RegisterSchema } from './registerForm.schema';
 
-const SignupSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, 'Your name is too short')
-    .max(70, 'Your name is too Long (70 max chars)')
-    .required('Required'),
-  email: Yup.string()
-    .email('Please use a valid email address')
-    .required('Required'),
-  password: Yup.string()
-    .required('Required')
-    .matches(StrongPasswordRegex, 'Must be at least 6 characters, 1 lowercase, 1 uppercase, 1 number, 1 special character and at most 50'),
-});
-
-interface SignupFormValues {
+interface RegisterFormValues {
   name: string;
   email: string;
   password: string;
 }
 
-export const SignupForm: FunctionComponent = () => {
+interface RegisterFormProps {
+  setShowForm: React.Dispatch<SetStateAction<boolean>>;
+}
+
+export const RegisterForm: FunctionComponent<RegisterFormProps> = ({ setShowForm }) => {
   const sessionContext = useContext(SessionContext);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errors, setErrors] = useState<Array<any>>([]);
@@ -39,7 +31,7 @@ export const SignupForm: FunctionComponent = () => {
     return errors.filter(error => error.key === key).length > 0;
   };
 
-  const getErrorStyle = (key: string, formikErrors: FormikErrors<SignupFormValues>) => {
+  const getErrorStyle = (key: string, formikErrors: FormikErrors<RegisterFormValues>) => {
     if (hasErrorKey(key) || (formikErrors && {}.hasOwnProperty.call(formikErrors, key))) {
       return {
         border: '2px solid red',
@@ -47,7 +39,7 @@ export const SignupForm: FunctionComponent = () => {
     }
   };
 
-  const handleSubmit = (values: SignupFormValues) => {
+  const handleSubmit = (values: RegisterFormValues) => {
     setIsSubmitting(true);
     setErrors([]);
 
@@ -58,8 +50,12 @@ export const SignupForm: FunctionComponent = () => {
       .then(res => {
         if (res.status === 201) {
           setIsSubmitting(false);
-          sessionContext.updateSession(true);
-          history.push('/');
+          if (!res.data.redirect) {
+            sessionContext.updateSession(true);
+            history.push('/');
+          } else {
+            setShowForm(true);
+          }
         }
       })
       .catch(err => {
@@ -71,19 +67,19 @@ export const SignupForm: FunctionComponent = () => {
       });
   };
 
-  const initialValues: SignupFormValues = { name: '', email: '', password: '' };
+  const initialValues: RegisterFormValues = { name: '', email: '', password: '' };
 
   return (
     <>
       <FormContainer>
         <Formik
           initialValues={initialValues}
-          validationSchema={SignupSchema}
-          onSubmit={(values: SignupFormValues) => {
+          validationSchema={RegisterSchema}
+          onSubmit={(values: RegisterFormValues) => {
             handleSubmit(values);
           }}
         >
-          {({ errors: formErrors }: { errors: FormikErrors<SignupFormValues> }): JSX.Element => (
+          {({ errors: formErrors }: { errors: FormikErrors<RegisterFormValues> }): JSX.Element => (
             <Form>
               <FormGroup direction="column">
                 <label htmlFor="name">Your Name:</label>
@@ -100,7 +96,7 @@ export const SignupForm: FunctionComponent = () => {
                 <Field type="password" name="password" placeholder="password" style={getErrorStyle('password', formErrors)} />
                 <ErrorMessage name="password" component="span" />
               </FormGroup>
-              {errors.length >0 && (
+              {errors.length > 0 && (
                 <>
                   <FormGroup>
                     {errors.map(error => (
@@ -113,7 +109,7 @@ export const SignupForm: FunctionComponent = () => {
                 </>
               )}
               <StyledFloatButton type="submit" disabled={isSubmitting}>
-                Register
+                {isSubmitting ? <FontAwesomeIcon icon={faSpinner} spin /> : <>Register</>}
               </StyledFloatButton>
             </Form>
           )}

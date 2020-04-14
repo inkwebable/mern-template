@@ -3,7 +3,7 @@ import { Route, Switch, useLocation } from 'react-router-dom';
 
 import { hasSession, SessionContext } from '../modules/auth/session';
 import { SecureRoute } from '../modules/secureRoute';
-import { HomePage, LoginPage, NotFoundPage, ProfilePage, RegisterPage } from '../pages';
+import { ConfirmationPage, HomePage, LoginPage, NotFoundPage, ProfilePage, ResendPage, SignUpPage } from '../pages';
 
 export const AppRouter = (): JSX.Element => {
   const location = useLocation();
@@ -17,7 +17,9 @@ export const AppRouter = (): JSX.Element => {
     <Switch>
       <Route exact key="/" path="/" component={HomePage} />
       <Route exact key="/login" path="/login" component={LoginPage} />
-      <Route exact key="/signup" path="/signup" component={RegisterPage} />
+      <Route exact key="/signup" path="/signup" component={SignUpPage} />
+      <Route exact key="/signup/resend" path="/signup/resend" component={ResendPage} />
+      <Route exact key="/signup/confirm/:id" path="/signup/confirm/:id" component={ConfirmationPage} />
       <SecureRoute exact path="/profile">
         <ProfilePage />
       </SecureRoute>

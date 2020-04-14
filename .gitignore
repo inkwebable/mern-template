@@ -4,6 +4,7 @@
 # configs
 .env
 client/.env
+config/dev.js
 
 # dependencies
 /node_modules

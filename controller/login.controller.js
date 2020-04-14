@@ -1,6 +1,6 @@
 import express from 'express';
 import { generateToken, generateRefreshToken } from '../utils/generateToken';
-import User from '../models/user';
+import User from '../models/user/User';
 import catchAsync from '../utils/CatchAsync';
 import generateAuthCookies from '../utils/generateAuthCookies';
 
@@ -16,7 +16,9 @@ const login = catchAsync(async (req, res) => {
     const user = await User.findByCredentials({ email, password });
 
     if (user) {
-      // const expiration = process.env.DB_ENV === 'testing' ? 1000 * 60 * 30 : 1000 * 60 * 30; // expires after 30 minutes
+      if (!user.isVerified) {
+        return res.status(403).send({ error: 'Your account has not been verified.' });
+      }
 
       const token = generateToken(user.id, user.role);
 
@@ -27,6 +29,7 @@ const login = catchAsync(async (req, res) => {
 
       // @TODO do not leave this uncommented in prod
       // return res.send(token);
+
       return res.status(200).json({ role: user.role });
     }
     return res.send('Username or password incorrect');

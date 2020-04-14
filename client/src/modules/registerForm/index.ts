@@ -1,1 +1,2 @@
-export { SignupForm } from './signupForm';
+export { RegisterForm } from './registerForm';
+export { RegisterSchema } from './registerForm.schema';
