@@ -6,6 +6,7 @@ function keys() {
     return prodKeys;
   }
 
+  // eslint-disable-next-line global-require
   return require('./dev').default;
 }
 
