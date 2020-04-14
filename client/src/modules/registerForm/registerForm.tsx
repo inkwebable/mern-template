@@ -5,9 +5,11 @@ import { ErrorMessage, Field, Form, Formik, FormikErrors } from 'formik';
 import React, { FunctionComponent, SetStateAction, useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { colors } from '../../assets/styles/settings';
 import { SessionContext } from '../auth/session';
 import { StyledFloatButton } from '../core/buttons';
 import { FormContainer, FormGroup } from '../core/form';
+import { StyledText } from '../core/text';
 import { RegisterSchema } from './registerForm.schema';
 
 interface RegisterFormValues {
@@ -34,7 +36,7 @@ export const RegisterForm: FunctionComponent<RegisterFormProps> = ({ setShowForm
   const getErrorStyle = (key: string, formikErrors: FormikErrors<RegisterFormValues>) => {
     if (hasErrorKey(key) || (formikErrors && {}.hasOwnProperty.call(formikErrors, key))) {
       return {
-        border: '2px solid red',
+        border: `2px solid ${colors.error}`,
       };
     }
   };
@@ -100,9 +102,7 @@ export const RegisterForm: FunctionComponent<RegisterFormProps> = ({ setShowForm
                 <>
                   <FormGroup>
                     {errors.map(error => (
-                      <p key={error.key} style={{ color: 'red' }}>
-                        {error.message}
-                      </p>
+                      <StyledText key={error.key}>{error.message}</StyledText>
                     ))}
                   </FormGroup>
                   <p style={{ textAlign: 'left', fontWeight: 'bold' }}>Please update the form to continue.</p>

@@ -8,7 +8,7 @@ export const FormContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 360px;
+  max-width: ${rem(360)};
   padding: ${spacers[3]};
   color: white;
   background-color: ${colors.darkBg};
@@ -30,7 +30,7 @@ export const FormContainer = styled.div`
   }
 
   span {
-    color: red;
+    color: ${colors.error};
     font-size: ${fontSizes.t};
   }
 `;
@@ -41,7 +41,7 @@ interface FormGroupProps {
 
 export const FormGroup = styled.div<FormGroupProps>`
   display: flex;
-  flex-direction: ${({ direction }) => direction || 'row'};
+  flex-direction: ${({ direction }): string => direction || 'row'};
   margin: ${spacers[4]} 0;
   text-align: left;
 `;

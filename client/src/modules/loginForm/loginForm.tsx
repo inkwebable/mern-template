@@ -1,11 +1,16 @@
 import axios from 'axios';
-import React, { FunctionComponent, useContext, useState } from 'react';
+import React, { SetStateAction, useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { SessionContext } from '../auth/session';
-import { FormGroup, LoginButton } from './loginForm.styled';
+import { StyledFloatButton } from '../core/buttons';
+import { FormContainer, FormGroup } from '../core/form';
 
-export const LoginForm: FunctionComponent = () => {
+interface LoginFormProps {
+  setError: React.Dispatch<SetStateAction<string>>;
+}
+
+export const LoginForm: React.FunctionComponent<LoginFormProps> = ({ setError }) => {
   const sessionContext = useContext(SessionContext);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -16,6 +21,7 @@ export const LoginForm: FunctionComponent = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);
+    setError('');
 
     axios
       .post('/api/login', { email, password }, { withCredentials: true })
@@ -27,39 +33,46 @@ export const LoginForm: FunctionComponent = () => {
         }
       })
       .catch(err => {
-        console.log(err);
+        if (err.response.data && {}.hasOwnProperty.call(err.response.data, 'error')) {
+          setError(err.response.data.error);
+        } else {
+          setError(err.message);
+        }
+
         sessionContext.updateSession(false);
         setIsSubmitting(false);
       });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <FormGroup>
-        <label htmlFor="email">Username:</label>
-        <input
-          id="email"
-          type="text"
-          placeholder="username"
-          required
-          value={email}
-          onChange={(e: React.FormEvent<HTMLInputElement>) => setEmail(e.currentTarget.value)}
-        />
-      </FormGroup>
-      <FormGroup>
-        <label htmlFor="password">Password:</label>
-        <input
-          id="password"
-          type="password"
-          placeholder="password"
-          required
-          value={password}
-          onChange={(e: React.FormEvent<HTMLInputElement>) => setPassword(e.currentTarget.value)}
-        />
-      </FormGroup>
-      <LoginButton type="submit" disabled={isSubmitting}>
-        Login
-      </LoginButton>
-    </form>
+    <FormContainer>
+      <form onSubmit={handleSubmit}>
+        <FormGroup>
+          <label htmlFor="email">Username:</label>
+          <input
+            id="email"
+            type="text"
+            placeholder="username"
+            required
+            value={email}
+            onChange={(e: React.FormEvent<HTMLInputElement>): void => setEmail(e.currentTarget.value)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <label htmlFor="password">Password:</label>
+          <input
+            id="password"
+            type="password"
+            placeholder="password"
+            required
+            value={password}
+            onChange={(e: React.FormEvent<HTMLInputElement>): void => setPassword(e.currentTarget.value)}
+          />
+        </FormGroup>
+        <StyledFloatButton type="submit" disabled={isSubmitting}>
+          Login
+        </StyledFloatButton>
+      </form>
+    </FormContainer>
   );
 };

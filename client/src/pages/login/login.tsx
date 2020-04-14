@@ -1,21 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { colors } from '../../assets/styles/settings';
+import { StyledText } from '../../modules/core/text';
 import { FlexContainer, MaxWidthContainer } from '../../modules/layout';
 import { LoginForm } from '../../modules/loginForm';
-import { LoginFormContainer } from '../../modules/loginForm/loginForm.styled';
 import { PageTitle1 } from '../../modules/page/pages.styled';
 
-export const LoginPage = (): JSX.Element => (
-  <MaxWidthContainer>
-    <PageTitle1>Login</PageTitle1>
-    <p>
-      You can <Link to="signup">Register</Link> if you don&apos;t have an account.
-    </p>
-    <FlexContainer align="center">
-      <LoginFormContainer>
-        <LoginForm />
-      </LoginFormContainer>
-    </FlexContainer>
-  </MaxWidthContainer>
-);
+export const LoginPage = (): JSX.Element => {
+  const [error, setError] = useState<string>('');
+
+  return (
+    <MaxWidthContainer>
+      <PageTitle1>Login</PageTitle1>
+      <p>
+        You can <Link to="signup">Register</Link> if you don&apos;t have an account.
+      </p>
+      <FlexContainer align="center">
+        <LoginForm setError={setError} />
+        {error && <StyledText color={colors.error}>{error}</StyledText>}
+      </FlexContainer>
+    </MaxWidthContainer>
+  );
+};

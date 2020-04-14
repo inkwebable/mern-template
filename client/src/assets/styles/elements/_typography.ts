@@ -2,8 +2,8 @@ import { css } from 'styled-components';
 
 export const typography = () => css`
   p {
-    margin-top: 1em;
-    margin-bottom: 1em;
+    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
   }
 
   strong {

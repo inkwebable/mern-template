@@ -4,6 +4,7 @@ import axios from 'axios';
 import { ErrorMessage, Field, Form, Formik, FormikErrors, FormikState } from 'formik';
 import React, { FunctionComponent, SetStateAction, useContext, useState } from 'react';
 
+import { colors } from '../../assets/styles/settings';
 import { SessionContext } from '../auth/session';
 import { StyledFloatButton } from '../core/buttons';
 import { FormContainer, FormGroup } from '../core/form';
@@ -29,7 +30,7 @@ export const VerifyEmailForm: FunctionComponent<VerifyEmailFormProps> = ({ showF
   const getErrorStyle = (key: string, formikErrors: FormikErrors<VerifyFormValues>) => {
     if (hasErrorKey(key) || (formikErrors && {}.hasOwnProperty.call(formikErrors, key))) {
       return {
-        border: '2px solid red',
+        border: `2px solid ${colors.error}`,
       };
     }
   };
