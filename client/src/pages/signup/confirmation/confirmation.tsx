@@ -10,6 +10,7 @@ export const ConfirmationPage: React.FunctionComponent = (): JSX.Element => {
   const [confirming, isConfirming] = useState<boolean>(false);
   const [alreadyConfirmed, isAlreadyConfirmed] = useState<boolean>(false);
   const [invalidToken, hasInvalidToken] = useState<boolean>(false);
+  const [noUser, hasNoUser] = useState<boolean>(false);
 
   const { id } = useParams();
 
@@ -29,9 +30,12 @@ export const ConfirmationPage: React.FunctionComponent = (): JSX.Element => {
         .catch(err => {
           isFinished(true);
           isConfirming(false);
-          console.log('confirmation err', err);
+
           if (err.response.status === 404) {
             hasInvalidToken(true);
+          }
+          if (err.response.status === 428) {
+            hasNoUser(true);
           }
         });
     }
@@ -49,6 +53,10 @@ export const ConfirmationPage: React.FunctionComponent = (): JSX.Element => {
 
   if (invalidToken) {
     return <p>Token not found or expired. Please request a <Link to="/verification/resend">new verification </Link> email.</p>;
+  }
+
+  if (noUser) {
+    return <p>No user found. Please <Link to="/signup">sign up  </Link> with a valid email.</p>;
   }
 
   if (finished && !confirming) {

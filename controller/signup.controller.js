@@ -15,19 +15,20 @@ const signupController = express.Router();
 
 const signup = async (req, res) => {
   const userReq = { role: 'member', ...req.body };
+
   try {
-    const user = new User(userReq);
     if (keys.emailRegistration) {
-      // @TODO use mongodb transactions to prevent storing user if error here
+      const user = new User(userReq);
       const mailer = new Mailer({});
-      await user.save();
       const verificationToken = new VerificationToken({
         _userId: user._id,
         token: crypto.randomBytes(16).toString('hex'),
       });
-      await verificationToken.save();
       await mailer.send(user.email, confirmEmail(user.name, verificationToken.token));
+      await verificationToken.save();
+      await user.save();
     } else {
+      const user = new User(userReq);
       user.isVerified = true;
       await user.save();
       const token = generateToken(user.id, user.role);
@@ -64,28 +65,20 @@ const confirm = async (req, res) => {
 
       User.findOne({ _id: token._userId })
         .then(user => {
-          // confirmation email.
           if (!user) {
-            res.send({ error: 'User not found' });
-          }
-
-          // The user exists but has not been confirmed. We need to confirm this
-          // user and let them know their email address has been confirmed.
-          else if (user && !user.isVerified) {
+            res.status(428).send({ error: 'User not found, please register first' });
+          } else if (user && !user.isVerified) {
             User.findByIdAndUpdate(user._id, { isVerified: true })
               .then(() => res.json({ message: 'User confirmed' }))
               .catch(err => console.log(err));
-          }
-
-          // The user has already confirmed this email address.
-          else {
+          } else {
             res.status(208).json({ message: 'You have already registered & your email is verified' });
           }
         })
         .catch(err => console.log('find user error', err));
     })
     .catch(err => {
-      console.log('error');
+      console.log('find verification token error', err);
     });
 };
 
