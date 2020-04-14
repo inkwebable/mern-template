@@ -1,4 +1,3 @@
-import devKeys from './dev';
 import prodKeys from './prod';
 
 function keys() {
@@ -6,7 +5,8 @@ function keys() {
   if (process.env.NODE_ENV === 'production') {
     return prodKeys;
   }
-  return devKeys;
+
+  return require('./dev').default;
 }
 
 export default keys();
