@@ -11,6 +11,7 @@ import { loginController, logoutController, signupController, userController, us
 // import AppError from './utils/AppError';
 import keys from './config/keys';
 import { authenticate, authorise } from './middleware/auth';
+import passwordController from './controller/password.controller';
 
 const app = express();
 
@@ -36,6 +37,7 @@ apiRouter.use('/user', [authenticate, authorise(['admin', 'member'])], userContr
 apiRouter.use('/login', loginController);
 apiRouter.use('/logout', logoutController);
 apiRouter.use('/signup', signupController);
+apiRouter.use('/password', passwordController);
 
 app.use((err, req, res, next) => {
   if (err instanceof ValidationError) {

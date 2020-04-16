@@ -24,3 +24,14 @@ export const emailValidation = {
       .required(),
   }),
 };
+
+export const passwordValidation = {
+  body: Joi.object().keys({
+    password: Joi.string()
+      .pattern(strongPasswordRegex)
+      .required()
+      .messages({
+        'string.pattern.base': strongPasswordMessage,
+      }),
+  }),
+};
