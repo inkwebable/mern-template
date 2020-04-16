@@ -24,7 +24,7 @@ const updatePassword = async (req, res) => {
       User.findOne({ _id: token._userId })
         .then(user => {
           if (!user) {
-            res.status(428).send({ error: 'User not found, please register first.' });
+            res.status(428).send({ error: 'User not found, please sign up first.' });
           } else if (user && !user.isVerified) {
             res.status(422).json({ error: 'You must verify your account first.' });
           } else {
@@ -52,7 +52,7 @@ const sendpasswordLink = async (req, res) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    return res.status(428).send({ error: 'User not found, please register first.' });
+    return res.status(428).send({ error: 'User not found, please sign up first.' });
   }
 
   if (!user.isVerified) {

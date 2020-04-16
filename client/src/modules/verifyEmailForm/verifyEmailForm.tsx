@@ -49,10 +49,16 @@ export const VerifyEmailForm: FunctionComponent<VerifyEmailFormProps> = ({ showF
       .post(postUrl, { email })
       .then(res => {
         if (res.status === 200) {
-          setIsSubmitting(false);
           resetForm();
-          showForm(true);
+          showForm(false);
         }
+
+        if (res.status === 208) {
+          resetForm();
+          setError(res.data.message);
+        }
+
+        setIsSubmitting(false);
       })
       .catch(err => {
         if (err.response.status === 422) {

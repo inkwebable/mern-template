@@ -72,13 +72,13 @@ const confirm = async (req, res) => {
       User.findOne({ _id: token._userId })
         .then(user => {
           if (!user) {
-            res.status(428).send({ error: 'User not found, please register first' });
+            res.status(428).send({ error: 'User not found, please sign up first' });
           } else if (user && !user.isVerified) {
             User.findByIdAndUpdate(user._id, { isVerified: true })
               .then(() => res.status(200).json({ message: 'User confirmed' }))
               .catch(err => console.log(err));
           } else {
-            res.status(208).json({ message: 'You have already registered & your email is verified' });
+            return res.status(208).json({ message: 'You have already signed up & your email is verified' });
           }
         })
         .catch(err => console.log('find user error', err));
@@ -98,7 +98,7 @@ const resendConfirm = async (req, res) => {
   }
 
   if (user.isVerified) {
-    res.status(208).json({ message: 'You have already registered & your email is verified' });
+    return res.status(208).send({ message: 'You have already signed up & your email is verified' });
   }
 
   try {
