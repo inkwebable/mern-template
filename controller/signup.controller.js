@@ -117,7 +117,11 @@ const resendConfirm = async (req, res) => {
 };
 
 signupController.post('', validate(signUpValidation, { statusCode: 422, keyByField: true }, {}), signup);
+signupController.post(
+  '/confirm/resend',
+  validate(emailValidation, { statusCode: 422, keyByField: true }),
+  resendConfirm,
+);
 signupController.get('/confirm/:id', confirm);
-signupController.post('/resend', validate(emailValidation, { statusCode: 422, keyByField: true }), resendConfirm);
 
 export default signupController;
