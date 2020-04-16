@@ -17,6 +17,12 @@ const signup = async (req, res) => {
   const userReq = { role: 'member', ...req.body };
 
   try {
+    const existingUser = await User.exists({ email: userReq.email });
+
+    if (existingUser) {
+      return res.status(422).json({ errors: [{ key: 'email', message: 'Email already exists' }] });
+    }
+
     if (keys.emailRegistration) {
       const user = new User(userReq);
       const mailer = new Mailer({});
@@ -69,7 +75,7 @@ const confirm = async (req, res) => {
             res.status(428).send({ error: 'User not found, please register first' });
           } else if (user && !user.isVerified) {
             User.findByIdAndUpdate(user._id, { isVerified: true })
-              .then(() => res.json({ message: 'User confirmed' }))
+              .then(() => res.status(200).json({ message: 'User confirmed' }))
               .catch(err => console.log(err));
           } else {
             res.status(208).json({ message: 'You have already registered & your email is verified' });
@@ -101,8 +107,8 @@ const resendConfirm = async (req, res) => {
       _userId: user._id,
       token: crypto.randomBytes(16).toString('hex'),
     });
-    await verificationToken.save();
     await mailer.send(user.email, confirmEmail(user.name, verificationToken.token));
+    await verificationToken.save();
     return res.status(200).send({ message: 'Completed' });
   } catch (err) {
     console.log('err', err);

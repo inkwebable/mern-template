@@ -18,21 +18,24 @@ const updatePassword = async (req, res) => {
   ResetPasswordToken.findOne({ token: id })
     .then(token => {
       if (!token) {
-        return res.status(404).send({ error: 'Your reset link has expired.' });
+        return res.status(404).send({ error: 'Your reset link has expired. Please request another.' });
       }
 
       User.findOne({ _id: token._userId })
         .then(user => {
           if (!user) {
-            res.status(428).send({ error: 'User not found, please register first' });
+            res.status(428).send({ error: 'User not found, please register first.' });
           } else if (user && !user.isVerified) {
-            res.status(422).json({ message: 'You must verify your account first' });
+            res.status(422).json({ error: 'You must verify your account first.' });
           } else {
             User.updateOne({ _id: user._id }, { $set: { password } })
-              .then(() => res.json({ message: 'User password updated' }))
+              .then(() => {
+                ResetPasswordToken.findOneAndDelete({ token: id }).catch(err => console.log(err));
+                return res.status(200).json({ message: 'User password updated.' });
+              })
               .catch(err => {
                 console.log('update password error', err);
-                res.json({ message: 'Unable to complete password update' });
+                return res.json({ error: 'Unable to complete password update.' });
               });
           }
         })
@@ -49,11 +52,11 @@ const sendpasswordLink = async (req, res) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    return res.status(200).send({ message: 'Completed' });
+    return res.status(428).send({ error: 'User not found, please register first.' });
   }
 
   if (!user.isVerified) {
-    res.status(400).json({ message: 'You must verify your account first' });
+    return res.status(428).json({ error: 'You must verify your account first.' });
   }
 
   try {
@@ -62,12 +65,12 @@ const sendpasswordLink = async (req, res) => {
       _userId: user._id,
       token: crypto.randomBytes(16).toString('hex'),
     });
+    await mailer.send(user.email, resetPassword(passwordResetToken.token));
     await passwordResetToken.save();
-    await mailer.send(user.email, resetPassword(user.name, passwordResetToken.token));
     return res.status(200).send({ message: 'Completed' });
   } catch (err) {
     console.log('err', err);
-    return res.status(422).send({ error: 'Unable to send verification email' });
+    return res.status(422).send({ error: 'Unable to send verification email.' });
   }
 };
 

@@ -102,7 +102,7 @@ export const RegisterForm: FunctionComponent<RegisterFormProps> = ({ setShowForm
                 <>
                   <FormGroup>
                     {errors.map(error => (
-                      <StyledText key={error.key}>{error.message}</StyledText>
+                      <StyledText key={error.key} color={colors.error}>{error.message}</StyledText>
                     ))}
                   </FormGroup>
                   <p style={{ textAlign: 'left', fontWeight: 'bold' }}>Please update the form to continue.</p>

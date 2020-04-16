@@ -8,6 +8,7 @@ import { colors } from '../../assets/styles/settings';
 import { SessionContext } from '../auth/session';
 import { StyledFloatButton } from '../core/buttons';
 import { FormContainer, FormGroup } from '../core/form';
+import { StyledText } from '../core/text';
 import { VerifyEmailFormSchema } from './veriftEmailForm.schema';
 
 interface VerifyFormValues {
@@ -15,16 +16,18 @@ interface VerifyFormValues {
 }
 
 interface VerifyEmailFormProps {
+  postUrl: string;
   showForm: React.Dispatch<SetStateAction<boolean>>;
 }
 
-export const VerifyEmailForm: FunctionComponent<VerifyEmailFormProps> = ({ showForm }) => {
+export const VerifyEmailForm: FunctionComponent<VerifyEmailFormProps> = ({ showForm, postUrl }) => {
   const sessionContext = useContext(SessionContext);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errors, setErrors] = useState<Array<any>>([]);
+  const [error, setError] = useState<string>('');
 
   const hasErrorKey = (key: string): boolean => {
-    return errors.filter(error => error.key === key).length > 0;
+    return errors.filter(err => err.key === key).length > 0;
   };
 
   const getErrorStyle = (key: string, formikErrors: FormikErrors<VerifyFormValues>) => {
@@ -38,11 +41,12 @@ export const VerifyEmailForm: FunctionComponent<VerifyEmailFormProps> = ({ showF
   const handleSubmit = (values: VerifyFormValues, resetForm: (nextState?: Partial<FormikState<VerifyFormValues>>) => void) => {
     setIsSubmitting(true);
     setErrors([]);
+    setError('');
 
     const { email } = values;
 
     axios
-      .post('/api/signup/resend', { email }, { withCredentials: false })
+      .post(postUrl, { email })
       .then(res => {
         if (res.status === 200) {
           setIsSubmitting(false);
@@ -53,7 +57,10 @@ export const VerifyEmailForm: FunctionComponent<VerifyEmailFormProps> = ({ showF
       .catch(err => {
         if (err.response.status === 422) {
           setErrors(err.response.data.errors);
+        } else {
+          setError(err.response.data.error);
         }
+
         sessionContext.updateSession(false);
         setIsSubmitting(false);
       });
@@ -81,10 +88,10 @@ export const VerifyEmailForm: FunctionComponent<VerifyEmailFormProps> = ({ showF
               {errors.length > 0 && (
                 <>
                   <FormGroup>
-                    {errors.map(error => (
-                      <p key={error.key} style={{ color: 'red' }}>
-                        {error.message}
-                      </p>
+                    {errors.map(err => (
+                      <StyledText key={err.key} color={colors.error}>
+                        {err.message}
+                      </StyledText>
                     ))}
                   </FormGroup>
                   <p style={{ textAlign: 'left', fontWeight: 'bold' }}>Please update the form to continue.</p>
@@ -97,6 +104,7 @@ export const VerifyEmailForm: FunctionComponent<VerifyEmailFormProps> = ({ showF
           )}
         </Formik>
       </FormContainer>
+      {error && <StyledText color={colors.error}>{error}</StyledText>}
     </>
   );
 };

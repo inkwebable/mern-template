@@ -52,7 +52,7 @@ export const ConfirmationPage: React.FunctionComponent = (): JSX.Element => {
   }
 
   if (invalidToken) {
-    return <p>Token not found or expired. Please request a <Link to="/verification/resend">new verification </Link> email.</p>;
+    return <p>Token not found or expired. Please request a <Link to="/signup/confirm/resend">new verification </Link> email.</p>;
   }
 
   if (noUser) {

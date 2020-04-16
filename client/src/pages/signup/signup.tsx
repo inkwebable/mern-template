@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { FlexContainer } from '../../modules/layout';
 import { PageTitle1 } from '../../modules/page/pages.styled';
@@ -17,6 +18,11 @@ export const SignUpPage = (): JSX.Element => {
           <>
             <p>Please fill in the form below to get started.</p>
             <RegisterForm setShowForm={setShowForm} />
+            <p>
+              Already have an account? Request 
+              {' '}
+              <Link to="/signup/confirm/resend">verification email</Link>
+            </p>
           </>
         )}
       </FlexContainer>
