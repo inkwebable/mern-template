@@ -10,6 +10,22 @@ import resetPassword from '../services/email/templates/resetPassword';
 
 const passwordController = express.Router();
 
+const confirm = async (req, res) => {
+  const { id } = req.params;
+
+  ResetPasswordToken.findOne({ token: id })
+    .then(token => {
+      if (!token) {
+        return res.status(404).send({ error: 'Your reset link has expired. Please request another.' });
+      }
+
+      return res.status(200).json({ message: 'Valid token' });
+    })
+    .catch(err => {
+      console.log('find verification token error', err);
+    });
+};
+
 const updatePassword = async (req, res) => {
   const { id } = req.params;
   const { password } = req.body;
@@ -73,6 +89,8 @@ const sendpasswordLink = async (req, res) => {
     return res.status(422).send({ error: 'Unable to send verification email.' });
   }
 };
+
+passwordController.get('/reset/:id', confirm);
 
 passwordController.put(
   '/reset/:id',
