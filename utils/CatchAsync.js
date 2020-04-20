@@ -1,4 +1,3 @@
-// should rely on try catch, but just incase
 const catchAsync = fn => {
   return (req, res, next) => {
     // can catch & log here

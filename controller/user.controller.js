@@ -9,12 +9,12 @@ userController.get('/', (req, res) => {
       user: req.user,
     });
   } catch (error) {
-    return res.status(400).json({ error });
+    return res.json({ error });
   }
 });
 
 userController.patch('/update', (req, res) => {
-  // @TODO validate params or let the model handle it
+  // sanitizing handled by mongoSanitize
   if (!req.body.name || !req.user) {
     return res.status(422).send({ error: 'missing parameter(s)' });
   }

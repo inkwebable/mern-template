@@ -31,11 +31,6 @@ Create react app, not ejected.
 
 - add docker / deploy to cloud
 - add in testing
-- error handling from API on all pages
-- add a real header & nav
-- add user registration page
-- add user profile page
-- re-vist authorisation & storing of user data
 
 ## The server
 
@@ -56,7 +51,4 @@ For *users* endpoints you need a user with a role of "admin" (create user via po
 - add docker / deploy to cloud
 - explore SSR vs static with express js
 - add ts to server
-- consider implementing module pattern structure
-- add better error handling
-- revistit refresh tokens
 - add testing

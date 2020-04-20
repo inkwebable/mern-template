@@ -2,41 +2,39 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 import { PageTitle1 } from '../../modules/page/pages.styled';
+import { APIUser } from '../../shared/const';
 
 export const ProfilePage = (): JSX.Element => {
-  const [userProfile, setUserProfile] = useState({ name: '*NAME' });
-  const [loadedProfile, setloadedProfile] = useState(false);
-  const [loadingProfile, setloadingProfile] = useState(false);
+  const [userProfile, setUserProfile] = useState({ name: '' });
+  const [submitted, setSubmitted] = useState<boolean>(false);
+  const [loadingProfile, setloadingProfile] = useState(true);
+  const [error, setError] = useState<string>('');
 
   useEffect(() => {
-    if (!loadedProfile) {
-      setloadingProfile(true);
+    if (!submitted) {
       axios
-        .get('/api/user')
+        .get(APIUser.Index)
         .then(res => {
-          setUserProfile({ name: res.data.user.name });
+          if (res.status === 200) {
+            setUserProfile({ name: res.data.user.name });
+          } else {
+            setError(res.data.error);
+          }
+
+          setSubmitted(true);
           setloadingProfile(false);
-          setloadedProfile(true);
         })
         .catch(err => {
-          // prevent no op react msg
-          if (loadedProfile) {
-            setloadingProfile(false);
-            setloadedProfile(false);
-          }
+          setError(err.response.data.error);
+          setSubmitted(true);
+          setloadingProfile(false);
         });
     }
-  }, [loadedProfile]);
+  }, [submitted]);
 
-  return (
-    <>
-      {loadedProfile
-        ? (
-          <PageTitle1>Welcome {userProfile.name}</PageTitle1>
-        )
-        : (
-          <p>Loading</p>
-        )}
-    </>
-  );
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  return <>{loadingProfile ? <p>Loading</p> : <PageTitle1>Welcome {userProfile.name}</PageTitle1>}</>;
 };

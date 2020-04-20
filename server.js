@@ -8,14 +8,13 @@ import mongoSanitize from 'express-mongo-sanitize';
 
 import { ValidationError } from 'express-validation';
 import { loginController, logoutController, signupController, userController, usersController } from './controller';
-// import AppError from './utils/AppError';
 import keys from './config/keys';
 import { authenticate, authorise } from './middleware/auth';
 import passwordController from './controller/password.controller';
 
 const app = express();
 
-console.log('express started', process.env.NODE_ENV);
+console.log('express started - node env:', process.env.NODE_ENV);
 
 app.use(helmet());
 app.use(express.json());
@@ -55,7 +54,7 @@ app.use((err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 
-  res.status(err.statusCode).json({
+  return res.status(err.statusCode).json({
     status: err.status,
     message: err.message,
   });

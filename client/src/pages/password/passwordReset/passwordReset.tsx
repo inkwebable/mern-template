@@ -5,18 +5,20 @@ import { Link, useParams } from 'react-router-dom';
 import { FlexContainer } from '../../../modules/layout';
 import { PageTitle1 } from '../../../modules/page/pages.styled';
 import { ResetPasswordForm } from '../../../modules/resetPasswordForm';
+import { APIPassword } from '../../../shared/const';
 
 export const PasswordResetPage: React.FunctionComponent = (): JSX.Element => {
   const [showForm, setShowForm] = useState<boolean>(false);
-  const [submitting, isSubmitting] = useState<boolean>(false);
+  const [submitted, setSubmitted] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
 
   const { id } = useParams();
 
   useEffect(() => {
-    if (!submitting) {
+    if (!submitted) {
       axios
-        .get(`/api/password/reset/${id}`)
+        .get(`${APIPassword.Reset}/${id}`)
         .then(res => {
           if (res.status !== 200) {
             setError(res.data.error);
@@ -24,17 +26,23 @@ export const PasswordResetPage: React.FunctionComponent = (): JSX.Element => {
             setShowForm(true);
           }
 
-          isSubmitting(false);
+          setSubmitted(true);
+          setLoading(false);
         })
         .catch(err => {
           setError(err.response.data.error);
-          isSubmitting(false);
+          setSubmitted(true);
+          setLoading(false);
           setShowForm(false);
         });
     }
-  }, [submitting]);
+  }, [submitted, id]);
 
   const result = (): JSX.Element => {
+    if (loading) {
+      return <p>Checking your token.</p>;
+    }
+
     if (error) {
       return <p>{error}</p>;
     }
@@ -48,16 +56,12 @@ export const PasswordResetPage: React.FunctionComponent = (): JSX.Element => {
       );
     }
 
-    if (!showForm && !error) {
-      return (
-        <p>
-          Your password has been updated, please
-          <Link to="/login"> login</Link>
-        </p>
-      );
-    }
-
-    return <p>Checking your token.</p>;
+    return (
+      <p>
+        Your password has been updated, please
+        <Link to="/login"> login</Link>
+      </p>
+    );
   };
 
   return (

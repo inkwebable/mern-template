@@ -22,7 +22,7 @@ interface VerifyEmailFormProps {
 
 export const VerifyEmailForm: FunctionComponent<VerifyEmailFormProps> = ({ showForm, postUrl }) => {
   const sessionContext = useContext(SessionContext);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const [errors, setErrors] = useState<Array<any>>([]);
   const [error, setError] = useState<string>('');
 
@@ -39,7 +39,7 @@ export const VerifyEmailForm: FunctionComponent<VerifyEmailFormProps> = ({ showF
   };
 
   const handleSubmit = (values: VerifyFormValues, resetForm: (nextState?: Partial<FormikState<VerifyFormValues>>) => void) => {
-    setIsSubmitting(true);
+    setSubmitting(true);
     setErrors([]);
     setError('');
 
@@ -48,6 +48,7 @@ export const VerifyEmailForm: FunctionComponent<VerifyEmailFormProps> = ({ showF
     axios
       .post(postUrl, { email })
       .then(res => {
+        setSubmitting(false);
         if (res.status === 200) {
           resetForm();
           showForm(false);
@@ -57,8 +58,6 @@ export const VerifyEmailForm: FunctionComponent<VerifyEmailFormProps> = ({ showF
           resetForm();
           setError(res.data.message);
         }
-
-        setIsSubmitting(false);
       })
       .catch(err => {
         if (err.response.status === 422) {
@@ -68,7 +67,7 @@ export const VerifyEmailForm: FunctionComponent<VerifyEmailFormProps> = ({ showF
         }
 
         sessionContext.updateSession(false);
-        setIsSubmitting(false);
+        setSubmitting(false);
       });
   };
 
@@ -103,8 +102,8 @@ export const VerifyEmailForm: FunctionComponent<VerifyEmailFormProps> = ({ showF
                   <p style={{ textAlign: 'left', fontWeight: 'bold' }}>Please update the form to continue.</p>
                 </>
               )}
-              <StyledFloatButton type="submit" disabled={isSubmitting}>
-                {isSubmitting ? <FontAwesomeIcon icon={faSpinner} spin /> : <>Submit</>}
+              <StyledFloatButton type="submit" disabled={submitting}>
+                {submitting ? <FontAwesomeIcon icon={faSpinner} spin /> : <>Submit</>}
               </StyledFloatButton>
             </Form>
           )}

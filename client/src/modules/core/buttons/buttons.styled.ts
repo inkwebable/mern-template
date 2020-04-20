@@ -1,4 +1,4 @@
-import { darken, lighten } from 'polished';
+import { darken } from 'polished';
 import styled from 'styled-components';
 
 import { colors, fontSizes, spacers } from '../../../assets/styles/settings';

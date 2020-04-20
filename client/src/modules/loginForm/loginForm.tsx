@@ -5,6 +5,8 @@ import { useHistory } from 'react-router-dom';
 import { SessionContext } from '../auth/session';
 import { StyledFloatButton } from '../core/buttons';
 import { FormContainer, FormGroup } from '../core/form';
+import AppRoutes from '../../shared/const/routes';
+import { APILogin } from '../../shared/const';
 
 interface LoginFormProps {
   setError: React.Dispatch<SetStateAction<string>>;
@@ -14,22 +16,22 @@ export const LoginForm: React.FunctionComponent<LoginFormProps> = ({ setError })
   const sessionContext = useContext(SessionContext);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   const history = useHistory();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsSubmitting(true);
+    setSubmitting(true);
     setError('');
 
     axios
-      .post('/api/login', { email, password }, { withCredentials: true })
+      .post(APILogin.Index, { email, password }, { withCredentials: true })
       .then(res => {
         if (res.status === 200) {
-          setIsSubmitting(false);
+          setSubmitting(false);
           sessionContext.updateSession(true);
-          history.push('/');
+          history.push(AppRoutes.Home.Index);
         }
       })
       .catch(err => {
@@ -40,7 +42,7 @@ export const LoginForm: React.FunctionComponent<LoginFormProps> = ({ setError })
         }
 
         sessionContext.updateSession(false);
-        setIsSubmitting(false);
+        setSubmitting(false);
       });
   };
 
@@ -54,6 +56,7 @@ export const LoginForm: React.FunctionComponent<LoginFormProps> = ({ setError })
             type="text"
             placeholder="username"
             required
+            autoComplete="username"
             value={email}
             onChange={(e: React.FormEvent<HTMLInputElement>): void => setEmail(e.currentTarget.value)}
           />
@@ -65,11 +68,12 @@ export const LoginForm: React.FunctionComponent<LoginFormProps> = ({ setError })
             type="password"
             placeholder="password"
             required
+            autoComplete="current-password"
             value={password}
             onChange={(e: React.FormEvent<HTMLInputElement>): void => setPassword(e.currentTarget.value)}
           />
         </FormGroup>
-        <StyledFloatButton type="submit" disabled={isSubmitting}>
+        <StyledFloatButton type="submit" disabled={submitting}>
           Login
         </StyledFloatButton>
       </form>

@@ -10,6 +10,7 @@ import { StyledFloatButton } from '../core/buttons';
 import { FormContainer, FormGroup } from '../core/form';
 import { StyledText } from '../core/text';
 import { ResetPasswordSchema } from './resetPasswordForm.schema';
+import { APIPassword } from '../../shared/const';
 
 interface ResetPasswordFormValues {
   password: string;
@@ -21,7 +22,7 @@ interface ResetPasswordFormProps {
 }
 
 export const ResetPasswordForm: FunctionComponent<ResetPasswordFormProps> = ({ setShowForm }) => {
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const [errors, setErrors] = useState<Array<any>>([]);
   const [error, setError] = useState<string>('');
 
@@ -40,20 +41,19 @@ export const ResetPasswordForm: FunctionComponent<ResetPasswordFormProps> = ({ s
   };
 
   const handleSubmit = (values: ResetPasswordFormValues) => {
-    setIsSubmitting(true);
+    setSubmitting(true);
     setErrors([]);
     setError('');
 
     const { password } = values;
 
     axios
-      .put(`/api/password/reset/${id}`, { password })
+      .put(`${APIPassword.Reset}/${id}`, { password })
       .then(res => {
+        setSubmitting(false);
         if (res.status === 200) {
           setShowForm(false);
         }
-
-        setIsSubmitting(false);
       })
       .catch(err => {
         if (err.response.status === 422) {
@@ -61,7 +61,7 @@ export const ResetPasswordForm: FunctionComponent<ResetPasswordFormProps> = ({ s
         } else {
           setError(err.response.data.error);
         }
-        setIsSubmitting(false);
+        setSubmitting(false);
       });
   };
 
@@ -104,8 +104,8 @@ export const ResetPasswordForm: FunctionComponent<ResetPasswordFormProps> = ({ s
                   <p style={{ textAlign: 'left', fontWeight: 'bold' }}>Please update the form to continue.</p>
                 </>
               )}
-              <StyledFloatButton type="submit" disabled={isSubmitting}>
-                {isSubmitting ? <FontAwesomeIcon icon={faSpinner} spin /> : <>Reset</>}
+              <StyledFloatButton type="submit" disabled={submitting}>
+                {submitting ? <FontAwesomeIcon icon={faSpinner} spin /> : <>Reset</>}
               </StyledFloatButton>
             </Form>
           )}

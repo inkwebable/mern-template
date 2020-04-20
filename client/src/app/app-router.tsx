@@ -14,6 +14,7 @@ import {
   ResendPage,
   SignUpPage,
 } from '../pages';
+import AppRoutes from '../shared/const/routes';
 
 export const AppRouter = (): JSX.Element => {
   const location = useLocation();
@@ -21,18 +22,18 @@ export const AppRouter = (): JSX.Element => {
 
   useEffect(() => {
     sessionContext.updateSession(hasSession());
-  }, [location]);
+  }, [location, sessionContext]);
 
   return (
     <Switch>
-      <Route exact key="/" path="/" component={HomePage} />
-      <Route exact key="/login" path="/login" component={LoginPage} />
-      <Route exact key="/password/forgotten" path="/password/forgotten" component={RequestPasswordResetPage} />
-      <Route exact key="/password/reset/:id" path="/password/reset/:id" component={PasswordResetPage} />
-      <Route exact key="/signup" path="/signup" component={SignUpPage} />
-      <Route exact key="/signup/confirm/resend" path="/signup/confirm/resend" component={ResendPage} />
-      <Route exact key="/signup/confirm/:id" path="/signup/confirm/:id" component={ConfirmationPage} />
-      <SecureRoute exact path="/profile">
+      <Route exact key={AppRoutes.Home.Index} path={AppRoutes.Home.Index} component={HomePage} />
+      <Route exact key={AppRoutes.Login.Index} path={AppRoutes.Login.Index} component={LoginPage} />
+      <Route exact key={AppRoutes.Password.Forgotten} path={AppRoutes.Password.Forgotten} component={RequestPasswordResetPage} />
+      <Route exact key={AppRoutes.Password.Reset} path={AppRoutes.Password.Reset} component={PasswordResetPage} />
+      <Route exact key={AppRoutes.SignUp.Index} path={AppRoutes.SignUp.Index} component={SignUpPage} />
+      <Route exact key={AppRoutes.SignUp.Resend} path={AppRoutes.SignUp.Resend} component={ResendPage} />
+      <Route exact key={AppRoutes.SignUp.Confirm} path={AppRoutes.SignUp.Confirm} component={ConfirmationPage} />
+      <SecureRoute exact key={AppRoutes.Profile.Index} path={AppRoutes.Profile.Index}>
         <ProfilePage />
       </SecureRoute>
       <Route path="*" component={NotFoundPage} />

@@ -6,11 +6,11 @@ import { LogoutButtonLink } from './logoutForm.styled';
 
 export const LogoutForm: FunctionComponent = () => {
   const sessionContext = useContext(SessionContext);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
 
   const handleSubmit = (event: React.MouseEvent) => {
     event.preventDefault();
-    setIsSubmitting(true);
+    setSubmitting(true);
 
     axios
       .get('/api/logout', { withCredentials: true })
@@ -18,19 +18,19 @@ export const LogoutForm: FunctionComponent = () => {
         if (res.status === 200) {
           sessionStorage.clear();
           sessionContext.updateSession(false);
-          setIsSubmitting(false);
+          setSubmitting(false);
         }
       })
       .catch(err => {
         console.log('logout err', err);
         sessionStorage.clear();
         sessionContext.updateSession(false);
-        setIsSubmitting(false);
+        setSubmitting(false);
       });
   };
 
   return (
-    <LogoutButtonLink onClick={handleSubmit} disabled={isSubmitting}>
+    <LogoutButtonLink onClick={handleSubmit} disabled={submitting}>
       Logout
     </LogoutButtonLink>
   );

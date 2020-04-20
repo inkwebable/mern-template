@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { FlexContainer } from '../../../modules/layout';
 import { PageTitle1 } from '../../../modules/page/pages.styled';
 import { VerifyEmailForm } from '../../../modules/verifyEmailForm';
+import { APISignUp } from '../../../shared/const';
 
 export const ResendPage = (): JSX.Element => {
   const [showForm, setShowForm] = useState<boolean>(true);
@@ -15,7 +16,7 @@ export const ResendPage = (): JSX.Element => {
       ) : (
         <FlexContainer align="center">
           <p>Please fill in the form below.</p>
-          <VerifyEmailForm showForm={setShowForm} postUrl="/api/signup/confirm/resend" />
+          <VerifyEmailForm showForm={setShowForm} postUrl={APISignUp.Resend} />
         </FlexContainer>
       )}
     </>

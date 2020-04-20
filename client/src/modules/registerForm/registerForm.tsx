@@ -6,6 +6,7 @@ import React, { FunctionComponent, SetStateAction, useContext, useState } from '
 import { useHistory } from 'react-router-dom';
 
 import { colors } from '../../assets/styles/settings';
+import { APISignUp } from '../../shared/const';
 import { SessionContext } from '../auth/session';
 import { StyledFloatButton } from '../core/buttons';
 import { FormContainer, FormGroup } from '../core/form';
@@ -16,6 +17,7 @@ interface RegisterFormValues {
   name: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
 interface RegisterFormProps {
@@ -24,7 +26,7 @@ interface RegisterFormProps {
 
 export const RegisterForm: FunctionComponent<RegisterFormProps> = ({ setShowForm }) => {
   const sessionContext = useContext(SessionContext);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const [errors, setErrors] = useState<Array<any>>([]);
 
   const history = useHistory();
@@ -42,16 +44,16 @@ export const RegisterForm: FunctionComponent<RegisterFormProps> = ({ setShowForm
   };
 
   const handleSubmit = (values: RegisterFormValues) => {
-    setIsSubmitting(true);
+    setSubmitting(true);
     setErrors([]);
 
     const { name, email, password } = values;
 
     axios
-      .post('/api/signup', { name, email, password }, { withCredentials: false })
+      .post(APISignUp.Index, { name, email, password }, { withCredentials: false })
       .then(res => {
         if (res.status === 201) {
-          setIsSubmitting(false);
+          setSubmitting(false);
           if (!res.data.redirect) {
             sessionContext.updateSession(true);
             history.push('/');
@@ -65,11 +67,11 @@ export const RegisterForm: FunctionComponent<RegisterFormProps> = ({ setShowForm
           setErrors(err.response.data.errors);
         }
         sessionContext.updateSession(false);
-        setIsSubmitting(false);
+        setSubmitting(false);
       });
   };
 
-  const initialValues: RegisterFormValues = { name: '', email: '', password: '' };
+  const initialValues: RegisterFormValues = { name: '', email: '', password: '', confirmPassword: '' };
 
   return (
     <>
@@ -90,26 +92,45 @@ export const RegisterForm: FunctionComponent<RegisterFormProps> = ({ setShowForm
               </FormGroup>
               <FormGroup direction="column">
                 <label htmlFor="email">Email:</label>
-                <Field type="email" name="email" placeholder="email" style={getErrorStyle('email', formErrors)} />
+                <Field type="email" name="email" placeholder="email" autoComplete="username" style={getErrorStyle('email', formErrors)} />
                 <ErrorMessage name="email" component="span" />
               </FormGroup>
               <FormGroup direction="column">
                 <label htmlFor="password">Password:</label>
-                <Field type="password" name="password" placeholder="password" style={getErrorStyle('password', formErrors)} />
+                <Field
+                  type="password"
+                  name="password"
+                  placeholder="password"
+                  autoComplete="new-password"
+                  style={getErrorStyle('password', formErrors)}
+                />
                 <ErrorMessage name="password" component="span" />
+              </FormGroup>
+              <FormGroup direction="column">
+                <label htmlFor="confirmPassword">Confirm Password:</label>
+                <Field
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="confirm password"
+                  autoComplete="confirm-password"
+                  style={getErrorStyle('confirmPassword', formErrors)}
+                />
+                <ErrorMessage name="confirmPassword" component="span" />
               </FormGroup>
               {errors.length > 0 && (
                 <>
                   <FormGroup>
                     {errors.map(error => (
-                      <StyledText key={error.key} color={colors.error}>{error.message}</StyledText>
+                      <StyledText key={error.key} color={colors.error}>
+                        {error.message}
+                      </StyledText>
                     ))}
                   </FormGroup>
                   <p style={{ textAlign: 'left', fontWeight: 'bold' }}>Please update the form to continue.</p>
                 </>
               )}
-              <StyledFloatButton type="submit" disabled={isSubmitting}>
-                {isSubmitting ? <FontAwesomeIcon icon={faSpinner} spin /> : <>Register</>}
+              <StyledFloatButton type="submit" disabled={submitting}>
+                {submitting ? <FontAwesomeIcon icon={faSpinner} spin /> : <>Register</>}
               </StyledFloatButton>
             </Form>
           )}

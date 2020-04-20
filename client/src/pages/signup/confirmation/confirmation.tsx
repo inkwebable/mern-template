@@ -4,69 +4,73 @@ import { Link, useParams } from 'react-router-dom';
 
 import { FlexContainer } from '../../../modules/layout';
 import { PageTitle1 } from '../../../modules/page/pages.styled';
+import { APISignUp } from '../../../shared/const';
+import AppRoutes from '../../../shared/const/routes';
 
 export const ConfirmationPage: React.FunctionComponent = (): JSX.Element => {
-  const [finished, isFinished] = useState<boolean>(false);
-  const [confirming, isConfirming] = useState<boolean>(false);
-  const [alreadyConfirmed, isAlreadyConfirmed] = useState<boolean>(false);
-  const [invalidToken, hasInvalidToken] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const [alreadyConfirmed, setAlreadyConfirmed] = useState<boolean>(false);
+  const [invalidToken, setInvalidToken] = useState<boolean>(false);
   const [noUser, hasNoUser] = useState<boolean>(false);
 
   const { id } = useParams();
 
   useEffect(() => {
-    if (!finished && !confirming) {
-      isConfirming(true);
+    if (!submitting) {
       axios
-        .get(`/api/signup/confirm/${id}`)
+        .get(`${APISignUp.Confirm}/${id}`)
         .then(res => {
           if (res.status === 208) {
-            isAlreadyConfirmed(true);
+            setAlreadyConfirmed(true);
           }
 
-          isFinished(true);
-          isConfirming(false);
+          setSubmitting(false);
         })
         .catch(err => {
-          isFinished(true);
-          isConfirming(false);
+          setSubmitting(false);
 
           if (err.response.status === 404) {
-            hasInvalidToken(true);
+            setInvalidToken(true);
           }
           if (err.response.status === 428) {
             hasNoUser(true);
           }
         });
     }
-  }, [finished, confirming]);
+  }, [submitting, id]);
 
   if (alreadyConfirmed) {
     return (
       <p>
-        You have already registered this email address.
-        {' '}
-        <Link to="/login">Log in</Link>
+        You have already registered this email address. You can <Link to={AppRoutes.Login.Index}>Log in</Link>
       </p>
     );
   }
 
   if (invalidToken) {
-    return <p>Token not found or expired. Please request a <Link to="/signup/confirm/resend">new verification </Link> email.</p>;
+    return (
+      <p>
+        Token not found or expired. Please request a <Link to={AppRoutes.SignUp.Resend}>new verification</Link> email.
+      </p>
+    );
   }
 
   if (noUser) {
-    return <p>No user found. Please <Link to="/signup">sign up  </Link> with a valid email.</p>;
+    return (
+      <p>
+        No user found. Please <Link to={AppRoutes.SignUp.Index}>sign up</Link> with a valid email.
+      </p>
+    );
   }
 
-  if (finished && !confirming) {
+  if (!submitting) {
     return (
       <>
         <PageTitle1>Thank you</PageTitle1>
         <FlexContainer align="center">
           <p>
-            Thank you for confirming your email. Please
-            <Link to="/login"> log in</Link>
+            Thank you for submitting your email. Please
+            <Link to={AppRoutes.Login.Index}> log in</Link>
           </p>
         </FlexContainer>
       </>
