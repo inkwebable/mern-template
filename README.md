@@ -1,4 +1,4 @@
-# The Porject
+# The Project
 
 A mern stack with basic user auth and user login/registration system. Create react app front end in TS and ExpressJS server on the back end.
 
