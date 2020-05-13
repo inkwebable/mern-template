@@ -1,5 +1,5 @@
 # ides
-.idea
+../.idea
 
 # configs
 .env

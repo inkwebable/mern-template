@@ -1,0 +1,59 @@
+version: '3.1'
+
+services:
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./server
+    volumes:
+    - /usr/src/app/node_modules # Inside the container, don't try to override this folder, just leave as is
+    - ./server:/usr/src/app
+    ports:
+      - 5001:5001
+    environment:
+      - PORT=5001
+      - JWT_SECRET=
+      - JWT_REFRESH_SECRET=
+      - CLIENT_URL=
+      - MONGO_URL=
+      - DB_ENV=
+      - NODE_ENV=development
+      - EMAIL_REGISTRATION=
+      - MAIL_HOST=
+      - MAIL_PORT=
+      - MAIL_USER=
+      - MAIL_PASS=
+    networks:
+      - mern-test
+  client:
+    stdin_open: true
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./client
+    volumes:
+      - /usr/src/app/node_modules # Inside the container, don't try to override this folder, just leave as is
+      - ./client:/usr/src/app
+    ports:
+      - 3000:3000
+    networks:
+      - mern-test
+    environment:
+      - CHOKDIR_USEPOLLING=true
+      - NODE_ENV=development
+#  mongo:
+#    image: mongo
+#    restart: always
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: example
+#  mongo-express:
+#    image: mongo-express
+#    restart: always
+#    ports:
+#      - 8081:8081
+#    environment:
+#      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+#      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+networks:
+  mern-test:
+    driver: bridge
