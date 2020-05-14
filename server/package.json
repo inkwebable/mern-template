@@ -1,7 +1,7 @@
 {
-  "name": "inkwebable-mern",
-  "version": "1.0.0",
-  "description": "inkwebable mern",
+  "name": "inkwebable-mern-server",
+  "version": "2.0.0",
+  "description": "inkwebable-mern-server",
   "main": "server.js",
   "scripts": {
     "start": "node -r esm server.js dotenv/config . dotenv_config_path=./.env",
@@ -12,7 +12,7 @@
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix ../client && npm run build --prefix client"
   },
   "author": "Thien",
-  "license": "ISC",
+  "private": true,
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "bcryptjs": "^2.4.3",
