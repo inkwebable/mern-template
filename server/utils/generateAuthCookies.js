@@ -1,10 +1,4 @@
-import keys from '../config/keys';
-
-const generateAuthCookies = (
-  token,
-  res,
-  maxAge = (keys.dbEnv === 'testing' ? 1000 * 60 * 60 * 8 : 1000 * 60 * 60 * 1)
-) => {
+const generateAuthCookies = (token, res, maxAge = 1000 * 60 * 60 * 1) => {
   // Split token into array to set onto cookies
   const arrayToken = token.split('.');
 

@@ -4,10 +4,10 @@
   "description": "inkwebable mern",
   "main": "server.js",
   "scripts": {
-    "start": "node -r esm server.js",
-    "server": "nodemon -r esm server.js",
+    "start": "node -r esm server.js dotenv/config . dotenv_config_path=./.env",
+    "server": "nodemon -r esm server.js dotenv/config . dotenv_config_path=./.env",
     "client": "npm run start --prefix ../client",
-    "devold": "nodemon -r esm server.js",
+    "devold": "nodemon -r esm server.js dotenv/config . dotenv_config_path=./.env",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix ../client && npm run build --prefix client"
   },

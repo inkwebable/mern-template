@@ -1,13 +1,12 @@
 import nodemailer from 'nodemailer';
-import keys from '../../config/keys';
 
 class Mailer {
   constructor({
-    host = keys.mailHost,
-    port = keys.mailPort,
+    host = process.env.MAIL_HOST,
+    port = process.env.MAIL_PORT,
     secure = true,
-    user = keys.mailUser,
-    pass = keys.mailPass,
+    user = process.env.MAIL_USER,
+    pass = process.env.MAIL_PASSWORD,
   }) {
     this.transporter = nodemailer.createTransport({
       host,
@@ -21,7 +20,7 @@ class Mailer {
     });
   }
 
-  async send(to, content, from = keys.mailUser) {
+  async send(to, content, from = process.env.MAIL_USER) {
     // The from and to addresses for the email that is about to be sent.
     const contacts = {
       from,

@@ -1,10 +1,9 @@
 import jwt from 'jsonwebtoken';
 import { v1 as uuidv1 } from 'uuid';
-import keys from '../config/keys';
 
 const generateToken = (id, role) => {
-  return jwt.sign({ id, role }, keys.jwtSecret, {
-    expiresIn: keys.dbEnv === 'testing' ? '8h' : '1h',
+  return jwt.sign({ id, role }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_MAX_AGE ? process.env.JWT_MAX_AGE : '1h',
   });
 };
 
@@ -19,8 +18,8 @@ const generateRefreshToken = (id, role) => {
     mockDB.tokens = mockDB.tokens.filter(token => token.userId !== id);
   }
 
-  const refreshToken = jwt.sign({ id, role }, keys.jwtRefreshSecret, {
-    expiresIn: keys.dbEnv === 'testing' ? '8h' : '1h',
+  const refreshToken = jwt.sign({ id, role }, process.env.JWT_REFRESH_SECRET, {
+    expiresIn: process.env.JWT_MAX_AGE ? process.env.JWT_MAX_AGE : '1h',
   });
 
   // add to db

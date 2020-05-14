@@ -1,5 +1,3 @@
-import keys from '../config/keys';
-
 export default () => {
-  return keys.nodeEnv === 'development' ? 'http://localhost:5001' : keys.clientUrl;
+  return process.env.NODE_ENV === 'development' ? 'http://localhost:5001' : process.env.CLIENT_URL;
 };

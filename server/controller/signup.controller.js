@@ -6,7 +6,6 @@ import { generateToken } from '../utils/generateToken';
 import generateAuthCookies from '../utils/generateAuthCookies';
 import Mailer from '../services/email/Mailer';
 import confirmEmail from '../services/email/templates/confirm';
-import keys from '../config/keys';
 import User from '../models/user/User';
 import VerificationToken from '../models/verificationToken/VerificationToken';
 import { emailValidation, signUpValidation } from '../services/validation';
@@ -23,7 +22,7 @@ const signup = async (req, res) => {
       return res.status(422).json({ errors: [{ key: 'email', message: 'Email already exists' }] });
     }
 
-    if (keys.emailRegistration) {
+    if (process.env.EMAIL_REGISTRATION) {
       const user = new User(userReq);
       const mailer = new Mailer({});
       const verificationToken = new VerificationToken({
@@ -41,7 +40,7 @@ const signup = async (req, res) => {
       res = generateAuthCookies(token, res);
     }
 
-    return res.status(201).json({ message: 'success', redirect: keys.emailRegistration });
+    return res.status(201).json({ message: 'success', redirect: process.env.EMAIL_REGISTRATION });
   } catch (err) {
     console.log('signup control caught', err);
 

@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../../models/user/User';
 import generateAuthCookies from '../../utils/generateAuthCookies';
-import keys from '../../config/keys';
 
 const authenticate = async (req, res, next) => {
   // Find JWT token in headers
@@ -16,7 +15,7 @@ const authenticate = async (req, res, next) => {
   let bearer;
 
   if (!(tokenPayloadCookie && tokenSignatureCookie) && !tokenHeader) {
-    return res.status(403).send({ error: 'Access Denied: Missing token'});
+    return res.status(403).send({ error: 'Access Denied: Missing token' });
   }
 
   if (tokenPayloadCookie && tokenSignatureCookie) {
@@ -38,7 +37,9 @@ const authenticate = async (req, res, next) => {
   }
 
   try {
-    decoded = await jwt.verify(tokenStr, keys.jwtSecret, { maxAge: keys.dbEnv === 'testing' ? '8h' : '60min' });
+    decoded = await jwt.verify(tokenStr, process.env.JWT_SECRET, {
+      maxAge: process.env.JWT_MAX_AGE ? process.env.JWT_MAX_AGE : '1h',
+    });
   } catch (err) {
     if (err instanceof jwt.JsonWebTokenError) {
       // make sure cookies are dead

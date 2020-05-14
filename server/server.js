@@ -8,7 +8,6 @@ import mongoSanitize from 'express-mongo-sanitize';
 
 import { ValidationError } from 'express-validation';
 import { loginController, logoutController, signupController, userController, usersController } from './controller';
-import keys from './config/keys';
 import { authenticate, authorise } from './middleware/auth';
 import passwordController from './controller/password.controller';
 
@@ -21,7 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
-    origin: [`${keys.clientUrl}`, 'http://localhost:3000'],
+    origin: [`${process.env.CLIENT_URL}`, 'http://localhost:3000'],
     credentials: true,
   }),
 );
@@ -71,22 +70,28 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-if (keys.mongoUrl) {
-  mongoose
-    .connect(keys.mongoUrl, {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
-      useUnifiedTopology: true,
-    })
-    .then(() => {
-      console.log(`Connected to mongoDB`);
-    })
-    .catch(err => {
-      console.log('mongo connection err', err);
-    });
-}
+// mongoose options
+const options = {
+  useNewUrlParser: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
+  useUnifiedTopology: true,
+  autoIndex: false,
+  poolSize: 10,
+  bufferMaxEntries: 0,
+};
 
-app.listen(keys.port, () => {
-  console.log(`Server is running on port ${keys.port}!`);
+const dbConnectionURL = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOSTNAME}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}`;
+
+mongoose
+  .connect(process.env.DB_ENV && process.env.DB_ENV === 'local' ? dbConnectionURL : process.env.MONGO_URL, options)
+  .then(() => {
+    console.log(`Connected to mongoDB `);
+  })
+  .catch(err => {
+    console.log('mongo connection err', err);
+  });
+
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${process.env.PORT}!`);
 });

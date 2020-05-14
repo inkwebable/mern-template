@@ -12,11 +12,9 @@ Make sure you have node installed:
 npm install
 ```
 
-Config is in the config folder in the root directory. 
+In the server folder copy the .env.example and create a new .env file from it
 
-You will need to copy **prod.js** and rename to **dev.js** and add your keys.
-
-If you don't add **mailUser** & pass information ensure **emailRegistration** is set to **false**.
+If you don't add **MAIL_USER** & pass information ensure **EMAIL_REGISTRATION** is set to **false**.
 
 To start:
 ```javascript
