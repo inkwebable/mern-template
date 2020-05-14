@@ -21,8 +21,8 @@ export const AppHeader: FunctionComponent = () => {
       <AppTitle>
         <StyledLink to="/">MERN</StyledLink>
       </AppTitle>
-      <AppLink href="https://github.com/inkwebable/mern" target="_blank" rel="noopener noreferrer">
-        https://github.com/inkwebable/mern
+      <AppLink href="https://github.com/inkwebable/mern-template" target="_blank" rel="noopener noreferrer">
+        https://github.com/inkwebable/mern-template
       </AppLink>
       <SessionContext.Consumer>
         {({ session }): JSX.Element | false =>
