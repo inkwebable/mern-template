@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: server
+  template:
+    metadata:
+      labels:
+        component: server
+    spec:
+      containers:
+        - name: server
+          image: inkwebable/mern-server
+          ports:
+            - containerPort: 5001
+          env:
+            - name: PORT
+              value: "5001"
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_SECRET
+            - name: JWT_MAX_AGE
+              value: "8h"
+            - name: JWT_EXPIRES_IN
+              value: "8h"
+            - name: CLIENT_URL
+              value: "http://localhost"
+            - name: DB_ENV
+              value: "local"
+            - name: NODE_ENV
+              value: "development"
+            - name: EMAIL_REGISTRATION
+              value: "true"
+            - name: MAIL_HOST
+              value: "smtp.zoho.com"
+            - name: MAIL_PORT
+              value: "465"
+            - name: MAIL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mail-user
+                  key: MAIL_USER
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mail-password
+                  key: MAIL_PASSWORD
+            - name: MONGO_HOSTNAME
+              value: "mongodb-cluster-ip-service"
+            - name: MONGO_PORT
+              value: "27017"
+            - name: MONGO_DB
+              value: mern
+            - name: MONGO_USER
+              value: defaultUser
+            - name: MONGO_PASSWORD
+              valueFrom:
+               secretKeyRef:
+                 name: mongo-user-password
+                 key: MONGO_USER_PASSWORD

@@ -1,8 +1,10 @@
-db.auth('root', 'rootPassword');
+//only for use with docker-compose locally
+admindDb = db.getSiblingDB('admin');
+admindDb.auth('admin', 'adminPassword');
 
-db = db.getSiblingDB('mern');
+mernDb = admindDb.getSiblingDB('mern');
 
-db.createUser(
+mernDb.createUser(
   {
     user: "defaultUser",
     pwd: "defaultPassword",

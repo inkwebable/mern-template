@@ -1,5 +1,3 @@
-import keys from '../../../config/keys';
-
 const resetPassword = (id) => {
   return {
     subject: 'Reset Your Password',

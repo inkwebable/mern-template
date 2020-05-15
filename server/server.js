@@ -82,11 +82,11 @@ const options = {
 };
 
 const dbConnectionURL = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOSTNAME}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}`;
-
+console.log('dbConnectionURL ', dbConnectionURL);
 mongoose
   .connect(process.env.DB_ENV && process.env.DB_ENV === 'local' ? dbConnectionURL : process.env.MONGO_URL, options)
   .then(() => {
-    console.log(`Connected to mongoDB `);
+    console.log(`Connected to mongoDB `, process.env.DB_ENV);
   })
   .catch(err => {
     console.log('mongo connection err', err);
