@@ -62,11 +62,11 @@ app.use((err, req, res, next) => {
 if (process.env.NODE_ENV === 'production') {
   // express will server up prod assets
   // like main.js or main.css from the dir given below
-  app.use(express.static('client/build'));
+  app.use(express.static('../client/build'));
 
   // Express will serve index.html if it don't recognise the route
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'));
   });
 }
 
