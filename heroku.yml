@@ -1,0 +1,4 @@
+build:
+  docker:
+    web: server/Dockerfile
+    client: client/Dockerfile
