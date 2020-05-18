@@ -2,7 +2,7 @@
 
 start the nginx controller first
 ```
-kubectl apply -f k8s/ingress0cloud
+kubectl apply -f k8s/ingress-cloud
 ```
 
 Then start the app after the ingress controller is up
