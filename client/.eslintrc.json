@@ -37,7 +37,6 @@
         "import/prefer-default-export": "off",
         "react/jsx-filename-extension": [0, { "extensions": [".js", ".jsx"] }],
         "@typescript-eslint/no-unused-vars": "off",
-        "jsx-a11y/label-has-associated-control": ["error", { "assert": "either" } ],
         "react/jsx-one-expression-per-line": [1, { "allow": "single-child" }]
     },
     "settings":  {
