@@ -19,14 +19,14 @@ To start from the server folder:
 npm run dev
 ```
 
-####Docker & Kubernetes
+##### Docker & Kubernetes
 If you use docker, there is a docker-compose file in the root. Just docker-compose up --build and go to http://localhost:3000. 
 
 There is also a k8s folder with a README for instructions on using Kubernetes.
 
 *If you are not using docker/kubernetes or a local mongoDB install then you will need to use an online mongoDB provider*
 
-##Config
+## Config
 
 If using docker mongo DB set **DB_ENV** to local & set the neccessary **MONGO** env variables.
 
