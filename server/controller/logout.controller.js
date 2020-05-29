@@ -1,9 +1,8 @@
 import express from 'express';
-import catchAsync from '../utils/CatchAsync';
 
 const logoutController = express.Router();
 
-const logout = catchAsync(async (req, res) => {
+const logout = async (req, res) => {
   try {
     res.cookie(
       '_p',
@@ -25,10 +24,10 @@ const logout = catchAsync(async (req, res) => {
 
     return res.status(200).json({ message: 'User logged out' });
   } catch (err) {
-    console.log('logout err caught', err);
+    console.log('logout err caught - see in console', err);
     return res.status(400).json(err.toString());
   }
-});
+};
 
 logoutController.get('', logout);
 

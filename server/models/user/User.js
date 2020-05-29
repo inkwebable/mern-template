@@ -3,19 +3,14 @@ import { compareSync, hashSync } from 'bcryptjs';
 
 const UserSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    email: {
+    username: {
       type: String,
       required: true,
       unique: true,
-      lowercase: true,
+      trim: true,
       validate: {
-        validator: email => User.doesNotExist({ email }),
-        message: 'Email already used.',
+        validator: username => User.doesNotExist({ username }),
+        message: 'Username already used.',
       },
     },
     password: {
@@ -44,21 +39,13 @@ UserSchema.pre('save', function() {
 });
 
 UserSchema.pre('updateOne', async function() {
-  // console.log('updateOne');
-  // console.log('updateOn query criteria', this.getQuery());
-  // console.log(this._update, this._update.$set.password);
-  // console.log(this._conditions);
   if (this._update.$set.password) {
-    console.log('updateOne password modified');
     this._update.$set.password = hashSync(this._update.$set.password, 10);
   }
 });
 
 UserSchema.pre('findOneAndUpdate', async function() {
-  console.log('findOneAndUpdate', this._update.name);
   // The document that `findOneAndUpdate()` will modify
-  // const docToUpdate = await this.model.findOne(this.getQuery());
-  // @TODO remove code once authorization is fleshed out
   if (this._update.role) {
     this._update.role = 'member';
   }
@@ -68,9 +55,9 @@ UserSchema.statics.doesNotExist = async function(field) {
   return (await this.where(field).countDocuments()) === 0;
 };
 
-UserSchema.statics.findByCredentials = async ({ email, password }) => {
-  // Search for a user by email and password.
-  const user = await User.findOne({ email });
+UserSchema.statics.findByCredentials = async ({ username, password }) => {
+  // Search for a user by username and password.
+  const user = await User.findOne({ username });
   if (!user) {
     throw new Error('Invalid login credentials');
   }

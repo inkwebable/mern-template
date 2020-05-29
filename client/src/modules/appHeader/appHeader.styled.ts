@@ -12,8 +12,7 @@ export const AppContainerHeader = styled.header`
   padding-top: 10px;
   padding-bottom: 20px;
   color: white;
-  //font-size: calc(5px + 2vmin);
-  font-size: calc(2vmin);
+  font-size: calc(3vmin);
   background-color: #282c34;
 `;
 

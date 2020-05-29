@@ -3,12 +3,9 @@ import * as Yup from 'yup';
 import { StrongPasswordRegex } from '../core/validation';
 
 export const RegisterSchema = Yup.object().shape({
-  name: Yup.string()
+  username: Yup.string()
     .min(2, 'Your name is too short')
     .max(70, 'Your name is too Long (70 max chars)')
-    .required('Required'),
-  email: Yup.string()
-    .email('Please use a valid email address')
     .required('Required'),
   password: Yup.string()
     .required('Required')

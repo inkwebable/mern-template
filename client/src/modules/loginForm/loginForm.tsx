@@ -1,12 +1,12 @@
-import axios from 'axios';
 import React, { SetStateAction, useContext, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
+import AppRoutes from '../../shared/const/routes';
+import { authLoadingState, logUserIn } from '../auth/dux/authReducer';
 import { SessionContext } from '../auth/session';
 import { StyledFloatButton } from '../core/buttons';
 import { FormContainer, FormGroup } from '../core/form';
-import AppRoutes from '../../shared/const/routes';
-import { APILogin } from '../../shared/const';
 
 interface LoginFormProps {
   setError: React.Dispatch<SetStateAction<string>>;
@@ -14,51 +14,49 @@ interface LoginFormProps {
 
 export const LoginForm: React.FunctionComponent<LoginFormProps> = ({ setError }) => {
   const sessionContext = useContext(SessionContext);
-  const [email, setEmail] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [submitting, setSubmitting] = useState<boolean>(false);
 
+  const loading = useSelector(authLoadingState);
+  const dispatch = useDispatch();
+
   const history = useHistory();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     setSubmitting(true);
     setError('');
 
-    axios
-      .post(APILogin.Index, { email, password }, { withCredentials: true })
-      .then(res => {
-        if (res.status === 200) {
-          setSubmitting(false);
-          sessionContext.updateSession(true);
-          history.push(AppRoutes.Home.Index);
-        }
-      })
-      .catch(err => {
-        if (err.response.data && {}.hasOwnProperty.call(err.response.data, 'error')) {
-          setError(err.response.data.error);
-        } else {
-          setError(err.message);
-        }
+    // @ts-ignore
+    const resultAction = await dispatch(logUserIn({ username, password }));
 
+    if (logUserIn.fulfilled.match(resultAction)) {
+      setSubmitting(false);
+      sessionContext.updateSession(true);
+      history.push(AppRoutes.Home.Index);
+    } else {
+      if (resultAction.payload) {
+        setError('Authentication failed! Please try again');
         sessionContext.updateSession(false);
         setSubmitting(false);
-      });
+      }
+    }
   };
 
   return (
     <FormContainer>
       <form onSubmit={handleSubmit}>
         <FormGroup>
-          <label htmlFor="email">Username:</label>
+          <label htmlFor="username">Username:</label>
           <input
-            id="email"
+            id="username"
             type="text"
             placeholder="username"
             required
             autoComplete="username"
-            value={email}
-            onChange={(e: React.FormEvent<HTMLInputElement>): void => setEmail(e.currentTarget.value)}
+            value={username}
+            onChange={(e: React.FormEvent<HTMLInputElement>): void => setUsername(e.currentTarget.value)}
           />
         </FormGroup>
         <FormGroup>
@@ -73,7 +71,7 @@ export const LoginForm: React.FunctionComponent<LoginFormProps> = ({ setError })
             onChange={(e: React.FormEvent<HTMLInputElement>): void => setPassword(e.currentTarget.value)}
           />
         </FormGroup>
-        <StyledFloatButton type="submit" disabled={submitting}>
+        <StyledFloatButton type="submit" disabled={loading === 'pending' || submitting}>
           Login
         </StyledFloatButton>
       </form>

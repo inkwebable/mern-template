@@ -2,15 +2,12 @@ export enum APILogin {
   Index = '/api/login',
 }
 
-export enum APISignUp {
-  Index = '/api/signup',
-  Confirm = '/api/signup/confirm',
-  Resend = '/api/signup/confirm/resend',
+export enum APILogout {
+  Index = '/api/logout',
 }
 
-export enum APIPassword {
-  Forgotten = '/api/password/forgotten',
-  Reset = '/api/password/reset',
+export enum APISignUp {
+  Index = '/api/signup',
 }
 
 export enum APIUser {
@@ -19,8 +16,8 @@ export enum APIUser {
 
 const ApiRoutes = {
   APILogin,
+  APILogout,
   APISignUp,
-  APIPassword,
   APIUser,
 };
 

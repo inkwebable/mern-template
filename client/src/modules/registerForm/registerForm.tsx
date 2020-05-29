@@ -14,8 +14,7 @@ import { StyledText } from '../core/text';
 import { RegisterSchema } from './registerForm.schema';
 
 interface RegisterFormValues {
-  name: string;
-  email: string;
+  username: string;
   password: string;
   confirmPassword: string;
 }
@@ -47,10 +46,10 @@ export const RegisterForm: FunctionComponent<RegisterFormProps> = ({ setShowForm
     setSubmitting(true);
     setErrors([]);
 
-    const { name, email, password } = values;
+    const { username, password } = values;
 
     axios
-      .post(APISignUp.Index, { name, email, password }, { withCredentials: false })
+      .post(APISignUp.Index, { username, password }, { withCredentials: false })
       .then(res => {
         if (res.status === 201) {
           setSubmitting(false);
@@ -71,7 +70,7 @@ export const RegisterForm: FunctionComponent<RegisterFormProps> = ({ setShowForm
       });
   };
 
-  const initialValues: RegisterFormValues = { name: '', email: '', password: '', confirmPassword: '' };
+  const initialValues: RegisterFormValues = { username: '', password: '', confirmPassword: '' };
 
   return (
     <>
@@ -86,14 +85,9 @@ export const RegisterForm: FunctionComponent<RegisterFormProps> = ({ setShowForm
           {({ errors: formErrors }: { errors: FormikErrors<RegisterFormValues> }): JSX.Element => (
             <Form>
               <FormGroup direction="column">
-                <label htmlFor="name">Your Name:</label>
-                <Field type="name" name="name" placeholder="name" style={getErrorStyle('name', formErrors)} />
-                <ErrorMessage name="name" component="span" />
-              </FormGroup>
-              <FormGroup direction="column">
-                <label htmlFor="email">Email:</label>
-                <Field type="email" name="email" placeholder="email" autoComplete="username" style={getErrorStyle('email', formErrors)} />
-                <ErrorMessage name="email" component="span" />
+                <label htmlFor="username">Your Username:</label>
+                <Field type="username" name="username" placeholder="username" style={getErrorStyle('username', formErrors)} />
+                <ErrorMessage name="username" component="span" />
               </FormGroup>
               <FormGroup direction="column">
                 <label htmlFor="password">Password:</label>

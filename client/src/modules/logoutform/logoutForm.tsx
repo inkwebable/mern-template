@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { FunctionComponent, useContext, useState } from 'react';
 
+import { APILogout } from '../../shared/const';
 import { SessionContext } from '../auth/session';
 import { LogoutButtonLink } from './logoutForm.styled';
 
@@ -13,7 +14,7 @@ export const LogoutForm: FunctionComponent = () => {
     setSubmitting(true);
 
     axios
-      .get('/api/logout', { withCredentials: true })
+      .get(APILogout.Index, { withCredentials: true })
       .then(res => {
         if (res.status === 200) {
           sessionStorage.clear();
@@ -22,7 +23,6 @@ export const LogoutForm: FunctionComponent = () => {
         }
       })
       .catch(err => {
-        console.log('logout err', err);
         sessionStorage.clear();
         sessionContext.updateSession(false);
         setSubmitting(false);

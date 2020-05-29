@@ -6,9 +6,9 @@ import App from './App';
 import getHistory from './utils/history';
 
 axios.interceptors.response.use(undefined, error => {
-  // @TODO remove before production
-  console.log('error', error.response.status, getHistory());
   const history = getHistory();
+
+  console.log('interceptor', error.response);
 
   if (error.response.status === 403) {
     // @TODO remove before production

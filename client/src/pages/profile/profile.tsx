@@ -5,7 +5,7 @@ import { PageTitle1 } from '../../modules/page/pages.styled';
 import { APIUser } from '../../shared/const';
 
 export const ProfilePage = (): JSX.Element => {
-  const [userProfile, setUserProfile] = useState({ name: '' });
+  const [userProfile, setUserProfile] = useState({ username: '' });
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [loadingProfile, setloadingProfile] = useState(true);
   const [error, setError] = useState<string>('');
@@ -16,7 +16,7 @@ export const ProfilePage = (): JSX.Element => {
         .get(APIUser.Index)
         .then(res => {
           if (res.status === 200) {
-            setUserProfile({ name: res.data.user.name });
+            setUserProfile({ username: res.data.user.username });
           } else {
             setError(res.data.error);
           }
@@ -36,5 +36,5 @@ export const ProfilePage = (): JSX.Element => {
     return <p>{error}</p>;
   }
 
-  return <>{loadingProfile ? <p>Loading</p> : <PageTitle1>Welcome {userProfile.name}</PageTitle1>}</>;
+  return <>{loadingProfile ? <p>Loading</p> : <PageTitle1>Welcome {userProfile.username}</PageTitle1>}</>;
 };

@@ -1,6 +1,6 @@
 # The Server
 
-Users ExpressJS.
+Uses ExpressJS.
 
 
 ## Getting Started
@@ -16,7 +16,14 @@ To start:
 npm run start
 ```
 
-Some routes are protected and require authentication via http only cookie and some also require authorisation denoted by user role on the user object. 
+or
+
+```javascript
+npm run server
+```
+
+Some routes are protected by the auth middlewares and require authentication via http only cookie. 
+Some also require authorisation denoted by user role on the user object. 
 
 There is also a *users* endpoint for fetching, updating, deleting a user or users, that are not listed here.
 For *users* endpoints you need a user with a role of "admin" (create user via postman)
@@ -25,5 +32,5 @@ For *users* endpoints you need a user with a role of "admin" (create user via po
 |------|-------|--------|
 | POST | /api/login | email: string, password: string |
 | POST | /api/logout | Not required|
-| POST | /api/signup | name: string, password: string, email: string |
+| POST | /api/signup | username: string, password: string, email: string |
 

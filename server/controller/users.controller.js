@@ -32,7 +32,6 @@ usersController.patch('/update/:id', [authorise(['admin'])], (req, res) => {
         return res.status(202).json(data);
       })
       .catch(err => {
-        // console.log(err.message);
         return res.status(400).send(err);
       });
   } catch (err) {
