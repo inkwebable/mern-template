@@ -3,15 +3,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { ErrorMessage, Field, Form, Formik, FormikErrors } from 'formik';
 import React, { FunctionComponent, SetStateAction, useContext, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { colors } from '../../assets/styles/settings';
-import { APISignUp } from '../../shared/const';
 import { SessionContext } from '../auth/session';
 import { StyledFloatButton } from '../core/buttons';
 import { FormContainer, FormGroup } from '../core/form';
 import { StyledText } from '../core/text';
 import { RegisterSchema } from './registerForm.schema';
+import { registerLoadingState, registerUser } from './dux/registerReducer';
 
 interface RegisterFormValues {
   username: string;
@@ -28,6 +29,9 @@ export const RegisterForm: FunctionComponent<RegisterFormProps> = ({ setShowForm
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [errors, setErrors] = useState<Array<any>>([]);
 
+  const loading = useSelector(registerLoadingState);
+  const dispatch = useDispatch();
+
   const history = useHistory();
 
   const hasErrorKey = (key: string): boolean => {
@@ -42,32 +46,24 @@ export const RegisterForm: FunctionComponent<RegisterFormProps> = ({ setShowForm
     }
   };
 
-  const handleSubmit = (values: RegisterFormValues) => {
+  const handleSubmit = async (values: RegisterFormValues) => {
     setSubmitting(true);
     setErrors([]);
 
     const { username, password } = values;
 
-    axios
-      .post(APISignUp.Index, { username, password }, { withCredentials: false })
-      .then(res => {
-        if (res.status === 201) {
-          setSubmitting(false);
-          if (!res.data.redirect) {
-            sessionContext.updateSession(true);
-            history.push('/');
-          } else {
-            setShowForm(true);
-          }
-        }
-      })
-      .catch(err => {
-        if (err.response.status === 422) {
-          setErrors(err.response.data.errors);
-        }
-        sessionContext.updateSession(false);
-        setSubmitting(false);
-      });
+    // @ts-ignore
+    const resultAction = await dispatch(registerUser({ username, password }));
+
+    if (registerUser.fulfilled.match(resultAction)) {
+      setSubmitting(false);
+      sessionContext.updateSession(true);
+      history.push('/');
+    } else {
+      setSubmitting(false);
+      setErrors(resultAction.payload.errors);
+    }
+
   };
 
   const initialValues: RegisterFormValues = { username: '', password: '', confirmPassword: '' };
@@ -124,7 +120,7 @@ export const RegisterForm: FunctionComponent<RegisterFormProps> = ({ setShowForm
                 </>
               )}
               <StyledFloatButton type="submit" disabled={submitting}>
-                {submitting ? <FontAwesomeIcon icon={faSpinner} spin /> : <>Register</>}
+                {submitting || loading === 'pending' ? <FontAwesomeIcon icon={faSpinner} spin /> : <>Register</>}
               </StyledFloatButton>
             </Form>
           )}
