@@ -1,7 +1,7 @@
 import express from 'express';
 import { validate } from 'express-validation';
 
-import { generateToken } from '../utils/generateToken';
+import generateToken from '../utils/generateToken';
 import generateAuthCookies from '../utils/generateAuthCookies';
 import User from '../models/user/User';
 import { signUpValidation } from '../services/validation';

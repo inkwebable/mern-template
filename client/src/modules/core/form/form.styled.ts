@@ -21,6 +21,7 @@ export const FormContainer = styled.div`
     flex: 1 1 auto;
     margin-right: ${spacers[3]};
     font-size: ${fontSizes.m};
+    width: 160px;
   }
 
   input {

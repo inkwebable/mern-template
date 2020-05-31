@@ -17,14 +17,14 @@ From the root you can run:
 npm start
 ```
 
-#### Client proxy
-
-If you are using the above script and not docker then ensure proxy in the client package.json is set to `http://localhost:5001` else it should be set to `http://api:5001`
-
 ##### Docker
 If you use docker, there is a docker-compose file in the root. Just `docker-compose up ` and go to http://localhost:3000 once everything has booted up. 
 
 *If you are not using docker or a local mongoDB install then you will need to use an online mongoDB provider*
+
+#### Client proxy
+
+If you are using `npm start` and not docker then ensure proxy in the client package.json is set to `http://localhost:5001` else it should be set to `http://api:5001`
 
 ## Config
 
