@@ -16,7 +16,7 @@ export const AppHeader: FunctionComponent = () => {
   };
 
   return (
-    <AppContainerHeader>
+    <AppContainerHeader data-testid="app-header">
       <AppLogo src={logo} className="App-logo" alt="logo" />
       <AppTitle>
         <StyledLink to="/">MERN</StyledLink>
