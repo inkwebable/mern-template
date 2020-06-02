@@ -70,29 +70,33 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-// mongoose options
-const options = {
-  useNewUrlParser: true,
-  useFindAndModify: false,
-  useCreateIndex: true,
-  useUnifiedTopology: true,
-  autoIndex: false,
-  poolSize: 10,
-  bufferMaxEntries: 0,
-};
+if (process.env.NODE_ENV !== 'test') {
+  // mongoose options
+  const options = {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    autoIndex: false,
+    poolSize: 10,
+    bufferMaxEntries: 0,
+  };
 
-const dbConnectionURL = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOSTNAME}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}`;
+  const dbConnectionURL = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOSTNAME}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}`;
 
-mongoose
-  .connect(process.env.DB_ENV === 'local' ? dbConnectionURL : process.env.MONGO_URL, options)
-  .then(() => {
-    console.log(`Connected to mongoDB `, process.env.DB_ENV);
-  })
-  .catch(err => {
-    console.log('dbConnectionURL ', dbConnectionURL);
-    console.log('mongo connection err', err);
-  });
+  mongoose
+    .connect(process.env.DB_ENV === 'local' ? dbConnectionURL : process.env.MONGO_URL, options)
+    .then(() => {
+      console.log(`Connected to mongoDB `, process.env.DB_ENV);
+    })
+    .catch(err => {
+      console.log('dbConnectionURL ', dbConnectionURL);
+      console.log('mongo connection err', err);
+    });
+}
 
-app.listen(process.env.PORT, () => {
+const server = app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}!`);
 });
+
+export default server;
