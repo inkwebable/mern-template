@@ -7,7 +7,6 @@
     "start": "node -r esm server.js dotenv/config . dotenv_config_path=./.env",
     "server": "nodemon -r esm server.js dotenv/config . dotenv_config_path=./.env",
     "client": "npm run start --prefix ../client",
-    "devold": "nodemon -r esm server.js dotenv/config . dotenv_config_path=./.env",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test": "cross-env NODE_ENV=test jest --run-in-band --config ./jest.config.json",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix ../client && npm run build --prefix ../client"

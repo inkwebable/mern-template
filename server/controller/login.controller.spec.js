@@ -2,10 +2,10 @@ import supertest from 'supertest';
 import { afterAll, afterEach, beforeAll, describe, it } from '@jest/globals';
 
 import server from '../server';
-import TestDbHelper from '../utils/TestDb';
+import TestDb from '../utils/TestDb';
 import User from '../models/user/User';
 
-const dbHelper = new TestDbHelper();
+const dbHelper = new TestDb();
 
 beforeAll(async () => {
   await dbHelper.start();

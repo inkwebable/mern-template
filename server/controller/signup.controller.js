@@ -9,6 +9,7 @@ import confirmEmail from '../services/email/templates/confirm';
 import User from '../models/user/User';
 import VerificationToken from '../models/verificationToken/VerificationToken';
 import { emailValidation, signUpValidation } from '../services/validation';
+import UserService from '../services/user/user.service';
 
 const signupController = express.Router();
 
@@ -16,13 +17,13 @@ const signup = async (req, res) => {
   const userReq = { role: 'member', ...req.body };
 
   try {
-    const existingUser = await User.exists({ email: userReq.email });
+    const existingUser = await UserService.userExists(userReq.email);
 
     if (existingUser) {
       return res.status(422).json({ errors: [{ key: 'email', message: 'Email already exists' }] });
     }
 
-    if (process.env.EMAIL_REGISTRATION) {
+    if (process.env.EMAIL_REGISTRATION === 'true') {
       const user = new User(userReq);
       const mailer = new Mailer({});
       const verificationToken = new VerificationToken({
@@ -33,14 +34,12 @@ const signup = async (req, res) => {
       await verificationToken.save();
       await user.save();
     } else {
-      const user = new User(userReq);
-      user.isVerified = true;
-      await user.save();
+      const user = await UserService.createVerifiedUser(userReq);
       const token = generateToken(user.id, user.role);
       res = generateAuthCookies(token, res);
     }
 
-    return res.status(201).json({ message: 'success', redirect: process.env.EMAIL_REGISTRATION });
+    return res.status(201).json({ message: 'success', redirect: process.env.EMAIL_REGISTRATION === 'true' });
   } catch (err) {
     console.log('signup control caught', err);
 
