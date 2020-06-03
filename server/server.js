@@ -7,9 +7,7 @@ import path from 'path';
 import mongoSanitize from 'express-mongo-sanitize';
 
 import { ValidationError } from 'express-validation';
-import { loginController, logoutController, signupController, userController, usersController } from './controller';
-import { authenticate, authorise } from './middleware/auth';
-import passwordController from './controller/password.controller';
+import apiRouter from './routes';
 
 const app = express();
 
@@ -27,15 +25,7 @@ app.use(
 app.use(cookieParser());
 app.use(mongoSanitize());
 
-const apiRouter = express.Router();
-
 app.use('/api', apiRouter);
-apiRouter.use('/users', [authenticate], usersController);
-apiRouter.use('/user', [authenticate, authorise(['admin', 'member'])], userController);
-apiRouter.use('/login', loginController);
-apiRouter.use('/logout', logoutController);
-apiRouter.use('/signup', signupController);
-apiRouter.use('/password', passwordController);
 
 app.use((err, req, res, next) => {
   if (err instanceof ValidationError) {
