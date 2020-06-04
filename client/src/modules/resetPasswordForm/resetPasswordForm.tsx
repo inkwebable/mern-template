@@ -59,7 +59,7 @@ export const ResetPasswordForm: FunctionComponent<ResetPasswordFormProps> = ({ s
         if (err.response.status === 422) {
           setErrors(err.response.data.errors);
         } else {
-          setError(err.response.data.error);
+          setError(err.response.data.message);
         }
         setSubmitting(false);
       });

@@ -1,5 +1,5 @@
 import express from 'express';
-import catchAsync from '../utils/CatchAsync';
+import { catchAsync } from '../utils/errorHandling';
 
 const logoutController = express.Router();
 

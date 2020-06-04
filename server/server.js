@@ -8,6 +8,14 @@ import mongoSanitize from 'express-mongo-sanitize';
 
 import { ValidationError } from 'express-validation';
 import apiRouter from './routes';
+import {
+  handleCastErrorDB,
+  handleDuplicateFieldsDB,
+  handleExpressValidationError,
+  handleValidationErrorDB,
+  sendErrorDev,
+  sendErrorProd,
+} from './utils/errorHandling';
 
 const app = express();
 
@@ -28,25 +36,25 @@ app.use(mongoSanitize());
 app.use('/api', apiRouter);
 
 app.use((err, req, res, next) => {
-  if (err instanceof ValidationError) {
-    if (err && err.details) {
-      const errs = err.details.map(errorObj => {
-        const objKeys = Object.keys(errorObj);
-        return { key: objKeys[0], message: errorObj[objKeys[0]] };
-      });
-      return res.status(err.statusCode).json({ errors: errs });
-    }
+  console.log('main error handler', err);
+  let error = { ...err };
+  if (err instanceof ValidationError) error = handleExpressValidationError(error);
+  if (error.name === 'CastError') error = handleCastErrorDB(error);
+  if (error.code === 11000) error = handleDuplicateFieldsDB(error);
+  if (error.name === 'ValidationError') error = handleValidationErrorDB(error);
+  if (process.env.NODE_ENV === 'development') {
+    sendErrorDev(error, res);
+  } else if (process.env.NODE_ENV === 'production') {
+    sendErrorProd(error, res);
+  } else {
+    err.statusCode = err.statusCode || 500;
+    err.status = err.status || 'error';
 
-    return res.status(err.statusCode).json(err);
+    return res.status(err.statusCode).json({
+      status: err.status,
+      message: err.message,
+    });
   }
-
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || 'error';
-
-  return res.status(err.statusCode).json({
-    status: err.status,
-    message: err.message,
-  });
 });
 
 if (process.env.NODE_ENV === 'production') {

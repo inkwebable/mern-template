@@ -9,68 +9,40 @@ import confirmEmail from '../services/email/templates/confirm';
 import User from '../models/user/User';
 import VerificationToken from '../models/verificationToken/VerificationToken';
 import { emailValidation, signUpValidation } from '../services/validation';
-import UserService from '../services/user/user.service';
+import SignUpService from '../services/signup/signup.service';
+import { catchAsync } from '../utils/errorHandling';
+import AppError from '../utils/AppError';
 
 const signupController = express.Router();
 
-const signup = async (req, res) => {
+const signup = catchAsync(async (req, res, next) => {
   const userReq = { role: 'member', ...req.body };
 
-  try {
-    const existingUser = await UserService.userExists(userReq.email);
+  const user = await SignUpService.registerUser(userReq);
 
-    if (existingUser) {
-      return res.status(422).json({ errors: [{ key: 'email', message: 'Email already exists' }] });
-    }
-
-    if (process.env.EMAIL_REGISTRATION === 'true') {
-      const user = new User(userReq);
-      const mailer = new Mailer({});
-      const verificationToken = new VerificationToken({
-        _userId: user._id,
-        token: crypto.randomBytes(16).toString('hex'),
-      });
-      await mailer.send(user.email, confirmEmail(user.name, verificationToken.token));
-      await verificationToken.save();
-      await user.save();
-    } else {
-      const user = await UserService.createVerifiedUser(userReq);
-      const token = generateToken(user.id, user.role);
-      res = generateAuthCookies(token, res);
-    }
-
-    return res.status(201).json({ message: 'success', redirect: process.env.EMAIL_REGISTRATION === 'true' });
-  } catch (err) {
-    console.log('signup control caught', err);
-
-    if (err && err.name === 'ValidationError') {
-      const errs = Object.keys(err.errors).map(key => {
-        if ({}.hasOwnProperty.call(err.errors, key)) {
-          return { key, message: err.errors[key].message };
-        }
-      });
-
-      return res.status(422).json({ errors: errs });
-    }
-
-    // A general error (db, crypto, etc…)
-    return res.status(400).json({ error: 'Sorry we are unable to sign you up right now.' });
+  if (user && process.env.EMAIL_REGISTRATION !== 'true') {
+    const token = generateToken(user.id, user.role);
+    res = generateAuthCookies(token, res);
   }
-};
 
-const confirm = async (req, res) => {
+  return res.status(201).json({ message: 'success', redirect: process.env.EMAIL_REGISTRATION === 'true' });
+});
+
+const confirm = catchAsync(async (req, res, next) => {
   const { id } = req.params;
 
   VerificationToken.findOne({ token: id })
     .then(token => {
       if (!token) {
-        return res.status(404).send({ error: 'Unable to find verification token' });
+        next(new AppError('Unable to find verification token', 404));
+        // return res.status(404).send({ error: 'Unable to find verification token' });
       }
 
       User.findOne({ _id: token._userId })
         .then(user => {
           if (!user) {
-            res.status(428).send({ error: 'User not found, please sign up first' });
+            next(new AppError('User not found, please sign up first', 428));
+            // res.status(428).send({ error: 'User not found, please sign up first' });
           } else if (user && !user.isVerified) {
             User.findByIdAndUpdate(user._id, { isVerified: true })
               .then(() => res.status(200).json({ message: 'User confirmed' }))
@@ -84,9 +56,9 @@ const confirm = async (req, res) => {
     .catch(err => {
       console.log('find verification token error', err);
     });
-};
+});
 
-const resendConfirm = async (req, res) => {
+const resendConfirm = catchAsync(async (req, res, next) => {
   const { email } = req.body;
 
   const user = await User.findOne({ email });
@@ -109,10 +81,10 @@ const resendConfirm = async (req, res) => {
     await verificationToken.save();
     return res.status(200).send({ message: 'Completed' });
   } catch (err) {
-    console.log('err', err);
-    return res.status(422).send({ error: 'Unable to send verification email' });
+    next(new AppError('Unable to send verification email', 422));
+    // return res.status(422).send({ error: 'Unable to send verification email' });
   }
-};
+});
 
 signupController.post('', validate(signUpValidation, { statusCode: 422, keyByField: true }, {}), signup);
 signupController.post(

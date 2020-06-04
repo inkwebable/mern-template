@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { compareSync, hashSync } from 'bcryptjs';
+import AppError from '../../utils/AppError';
 
 const UserSchema = new mongoose.Schema(
   {
@@ -72,11 +73,14 @@ UserSchema.statics.findByCredentials = async ({ email, password }) => {
   // Search for a user by email and password.
   const user = await User.findOne({ email });
   if (!user) {
-    throw new Error('Invalid login credentials');
+    throw new AppError('Invalid login credentials', 401);
+  }
+  if (typeof password !== 'string') {
+    throw new AppError('Password must be a string', 400);
   }
   const isPasswordMatch = await compareSync(password, user.password);
   if (!isPasswordMatch) {
-    throw new Error('Invalid login credentials');
+    throw new AppError('Invalid login credentials', 401);
   }
   return user;
 };

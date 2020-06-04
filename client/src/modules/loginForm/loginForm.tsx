@@ -35,8 +35,8 @@ export const LoginForm: React.FunctionComponent<LoginFormProps> = ({ setError })
         }
       })
       .catch(err => {
-        if (err.response.data && {}.hasOwnProperty.call(err.response.data, 'error')) {
-          setError(err.response.data.error);
+        if (err.response.data && {}.hasOwnProperty.call(err.response.data, 'message')) {
+          setError(err.response.data.message);
         } else {
           setError(err.message);
         }

@@ -20,7 +20,10 @@ export default class TestDb {
       bufferMaxEntries: 0,
     };
 
-    await mongoose.connect(url, options);
+    await mongoose
+      .connect(url, options)
+      .then(() => console.log('connected', url))
+      .catch(e => console.log('con error', e));
   }
 
   async stop() {
@@ -30,7 +33,7 @@ export default class TestDb {
   }
 
   async cleanup() {
-    const collections = mongoose.connection.collections;
+    const { collections } = mongoose.connection;
 
     for (const key in collections) {
       const collection = collections[key];

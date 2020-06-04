@@ -1,4 +1,4 @@
-import { afterAll, afterEach, beforeAll, describe, it } from '@jest/globals';
+import { afterAll, beforeAll, describe, it } from '@jest/globals';
 
 import UserService from './user.service';
 import TestDb from '../../utils/TestDb';
@@ -10,11 +10,8 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await dbHelper.stop();
-});
-
-afterEach(async () => {
   await dbHelper.cleanup();
+  await dbHelper.stop();
 });
 
 describe('user service', () => {
@@ -30,5 +27,56 @@ describe('user service', () => {
 
     expect(user).toBeDefined();
     expect(user._id).toBeDefined();
+    expect(user.isVerified).toEqual(true);
+  });
+
+  it('should create a non verified user', async () => {
+    const userInput = {
+      role: 'member',
+      name: 'tester2',
+      email: 'tester2@fake.com',
+      password: 'test!234',
+    };
+
+    const user = await UserService.createNonVerifiedUser(userInput);
+
+    expect(user).toBeDefined();
+    expect(user._id).toBeDefined();
+    expect(user.isVerified).toEqual(false);
+  });
+
+  it('should save a user', async () => {
+    const userInput = {
+      role: 'member',
+      name: 'tester2',
+      email: 'tester2@fake.com',
+      password: 'test!234',
+    };
+
+    const createdUser = await UserService.createNonVerifiedUser(userInput);
+    const user = await UserService.saveUser(createdUser);
+
+    expect(user).toBeDefined();
+    expect(user._id).toBeDefined();
+  });
+
+  it('should correctly determine if a user already exists', async () => {
+    const user = await UserService.userExists('tester@fake.com');
+    expect(user).toBe(true);
+  });
+
+  it('should not create a user if user already exists', async () => {
+    const userInput = {
+      role: 'member',
+      name: 'tester2',
+      email: 'tester2@fake.com',
+      password: 'test!234',
+    };
+
+    try {
+      await UserService.createVerifiedUser(userInput);
+    } catch (e) {
+      expect(e.message).toMatch('Email already used.');
+    }
   });
 });
