@@ -27,7 +27,7 @@ export const VerifyEmailForm: FunctionComponent<VerifyEmailFormProps> = ({ showF
   const [error, setError] = useState<string>('');
 
   const hasErrorKey = (key: string): boolean => {
-    return errors.filter(err => err.key === key).length > 0;
+    return errors.filter((err) => err.key === key).length > 0;
   };
 
   const getErrorStyle = (key: string, formikErrors: FormikErrors<VerifyFormValues>) => {
@@ -47,7 +47,7 @@ export const VerifyEmailForm: FunctionComponent<VerifyEmailFormProps> = ({ showF
 
     axios
       .post(postUrl, { email })
-      .then(res => {
+      .then((res) => {
         setSubmitting(false);
         if (res.status === 200) {
           resetForm();
@@ -59,7 +59,7 @@ export const VerifyEmailForm: FunctionComponent<VerifyEmailFormProps> = ({ showF
           setError(res.data.message);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         if (err.response.status === 422) {
           setErrors(err.response.data.errors);
         } else {
@@ -93,7 +93,7 @@ export const VerifyEmailForm: FunctionComponent<VerifyEmailFormProps> = ({ showF
               {errors.length > 0 && (
                 <>
                   <FormGroup>
-                    {errors.map(err => (
+                    {errors.map((err) => (
                       <StyledText key={err.key} color={colors.error}>
                         {err.message}
                       </StyledText>

@@ -20,7 +20,9 @@ export const LoginPage = (): JSX.Element => {
       <FlexContainer align="center">
         <LoginForm setError={setError} />
         {error && <StyledText color={colors.error}>{error}</StyledText>}
-        <p><Link to={AppRoutes.Password.Forgotten}>Forgotten your password?</Link></p>
+        <p>
+          <Link to={AppRoutes.Password.Forgotten}>Forgotten your password?</Link>
+        </p>
       </FlexContainer>
     </MaxWidthContainer>
   );

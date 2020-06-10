@@ -5,14 +5,10 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import getHistory from './utils/history';
 
-axios.interceptors.response.use(undefined, error => {
-  // @TODO remove before production
-  // console.log('error', error.response.status, getHistory());
+axios.interceptors.response.use(undefined, (error) => {
   const history = getHistory();
 
   if (error.response.status === 403) {
-    // @TODO remove before production
-    // console.log('redirect 403');
     history.push('/login');
   }
 

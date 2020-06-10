@@ -19,7 +19,7 @@ export const PasswordResetPage: React.FunctionComponent = (): JSX.Element => {
     if (!submitted) {
       axios
         .get(`${APIPassword.Reset}/${id}`)
-        .then(res => {
+        .then((res) => {
           if (res.status !== 200) {
             setError(res.data.error);
           } else {
@@ -29,7 +29,7 @@ export const PasswordResetPage: React.FunctionComponent = (): JSX.Element => {
           setSubmitted(true);
           setLoading(false);
         })
-        .catch(err => {
+        .catch((err) => {
           setError(err.response.data.error);
           setSubmitted(true);
           setLoading(false);

@@ -19,14 +19,14 @@ export const ConfirmationPage: React.FunctionComponent = (): JSX.Element => {
     if (!submitting) {
       axios
         .get(`${APISignUp.Confirm}/${id}`)
-        .then(res => {
+        .then((res) => {
           if (res.status === 208) {
             setAlreadyConfirmed(true);
           }
 
           setSubmitting(false);
         })
-        .catch(err => {
+        .catch((err) => {
           setSubmitting(false);
 
           if (err.response.status === 404) {

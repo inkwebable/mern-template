@@ -32,7 +32,7 @@ export const RegisterForm: FunctionComponent<RegisterFormProps> = ({ setShowForm
   const history = useHistory();
 
   const hasErrorKey = (key: string): boolean => {
-    return errors.filter(error => error.key === key).length > 0;
+    return errors.filter((error) => error.key === key).length > 0;
   };
 
   const getErrorStyle = (key: string, formikErrors: FormikErrors<RegisterFormValues>) => {
@@ -51,7 +51,7 @@ export const RegisterForm: FunctionComponent<RegisterFormProps> = ({ setShowForm
 
     axios
       .post(APISignUp.Index, { name, email, password }, { withCredentials: false })
-      .then(res => {
+      .then((res) => {
         if (res.status === 201) {
           setSubmitting(false);
           if (!res.data.redirect) {
@@ -62,7 +62,7 @@ export const RegisterForm: FunctionComponent<RegisterFormProps> = ({ setShowForm
           }
         }
       })
-      .catch(err => {
+      .catch((err) => {
         if (err.response.status === 422) {
           setErrors(err.response.data.errors);
         }
@@ -120,7 +120,7 @@ export const RegisterForm: FunctionComponent<RegisterFormProps> = ({ setShowForm
               {errors.length > 0 && (
                 <>
                   <FormGroup>
-                    {errors.map(error => (
+                    {errors.map((error) => (
                       <StyledText key={error.key} color={colors.error}>
                         {error.message}
                       </StyledText>
