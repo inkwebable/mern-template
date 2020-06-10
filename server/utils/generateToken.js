@@ -11,11 +11,11 @@ const generateRefreshToken = (id, role) => {
   const mockDB = { tokens: [] };
 
   // check if there are 5 or more refresh tokens,
-  const userRefreshTokens = mockDB.tokens.filter(token => token.userId === id);
+  const userRefreshTokens = mockDB.tokens.filter((token) => token.userId === id);
 
   // remove if more than 5
   if (userRefreshTokens.length >= 5) {
-    mockDB.tokens = mockDB.tokens.filter(token => token.userId !== id);
+    mockDB.tokens = mockDB.tokens.filter((token) => token.userId !== id);
   }
 
   const refreshToken = jwt.sign({ id, role }, process.env.JWT_REFRESH_SECRET, {

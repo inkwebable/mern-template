@@ -3,7 +3,7 @@ const confirmEmail = (name, id) => {
     subject: 'Confirm Your Email Address',
     text: `Copy and paste this link in your browser to confirm your email address: ${process.env.CLIENT_URL}/signup/confirm/${id}`,
     html: `
-      <html>
+      <html lang="en">
         <body>
           <div>
             <h3>

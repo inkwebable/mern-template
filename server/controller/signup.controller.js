@@ -1,17 +1,17 @@
-import express from 'express';
 import crypto from 'crypto';
+import express from 'express';
 import { validate } from 'express-validation';
 
-import { generateToken } from '../utils/generateToken';
-import generateAuthCookies from '../utils/generateAuthCookies';
-import Mailer from '../services/email/Mailer';
-import confirmEmail from '../services/email/templates/confirm';
 import User from '../models/user/User';
 import VerificationToken from '../models/verificationToken/VerificationToken';
-import { emailValidation, signUpValidation } from '../services/validation';
+import Mailer from '../services/email/Mailer';
+import confirmEmail from '../services/email/templates/confirm';
 import SignUpService from '../services/signup/signup.service';
-import { catchAsync } from '../utils/errorHandling';
+import { emailValidation, signUpValidation } from '../services/validation';
 import AppError from '../utils/AppError';
+import { catchAsync } from '../utils/errorHandling';
+import generateAuthCookies from '../utils/generateAuthCookies';
+import { generateToken } from '../utils/generateToken';
 
 const signupController = express.Router();
 
@@ -32,28 +32,28 @@ const confirm = catchAsync(async (req, res, next) => {
   const { id } = req.params;
 
   VerificationToken.findOne({ token: id })
-    .then(token => {
+    .then((token) => {
       if (!token) {
         next(new AppError('Unable to find verification token', 404));
         // return res.status(404).send({ error: 'Unable to find verification token' });
       }
 
       User.findOne({ _id: token._userId })
-        .then(user => {
+        .then((user) => {
           if (!user) {
             next(new AppError('User not found, please sign up first', 428));
             // res.status(428).send({ error: 'User not found, please sign up first' });
           } else if (user && !user.isVerified) {
             User.findByIdAndUpdate(user._id, { isVerified: true })
               .then(() => res.status(200).json({ message: 'User confirmed' }))
-              .catch(err => console.log(err));
+              .catch((err) => console.log(err));
           } else {
             return res.status(208).json({ message: 'You have already signed up & your email is verified' });
           }
         })
-        .catch(err => console.log('find user error', err));
+        .catch((err) => console.log('find user error', err));
     })
-    .catch(err => {
+    .catch((err) => {
       console.log('find verification token error', err);
     });
 });

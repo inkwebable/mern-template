@@ -2,6 +2,7 @@ import User from '../../models/user/User';
 
 export default class UserService {
   static async userExists(email) {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     return User.exists({ email });
   }
 

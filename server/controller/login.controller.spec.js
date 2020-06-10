@@ -1,9 +1,9 @@
-import supertest from 'supertest';
 import { afterAll, afterEach, beforeAll, describe, it } from '@jest/globals';
+import supertest from 'supertest';
 
+import User from '../models/user/User';
 import server from '../server';
 import TestDb from '../utils/TestDb';
-import User from '../models/user/User';
 
 const dbHelper = new TestDb();
 
@@ -29,12 +29,10 @@ afterEach(async () => {
 
 describe('Login', () => {
   it('should not log in a non existent user ', async () => {
-    const res = await supertest(server)
-      .post('/api/login')
-      .send({
-        email: 'tj@fake.com',
-        password: '12345678',
-      });
+    const res = await supertest(server).post('/api/login').send({
+      email: 'tj@fake.com',
+      password: '12345678',
+    });
 
     expect(res.statusCode).toEqual(400);
     expect(res.body).toHaveProperty('error');
@@ -51,12 +49,10 @@ describe('Login', () => {
 
     await user.save();
 
-    const res = await supertest(server)
-      .post('/api/login')
-      .send({
-        email: 'tester@fake.com',
-        password: 'test!234',
-      });
+    const res = await supertest(server).post('/api/login').send({
+      email: 'tester@fake.com',
+      password: 'test!234',
+    });
 
     expect(res.statusCode).toEqual(200);
     expect(res.body).toHaveProperty('role');

@@ -1,7 +1,8 @@
 import express from 'express';
-import { authenticate, authorise } from '../middleware/auth';
+
 import { loginController, logoutController, signupController, userController, usersController } from '../controller';
 import passwordController from '../controller/password.controller';
+import { authenticate, authorise } from '../middleware/auth';
 
 const apiRouter = express.Router();
 

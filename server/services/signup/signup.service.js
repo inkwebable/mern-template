@@ -1,9 +1,9 @@
 import crypto from 'crypto';
 
-import UserService from '../user/user.service';
-import Mailer from '../email/Mailer';
 import VerificationToken from '../../models/verificationToken/VerificationToken';
+import Mailer from '../email/Mailer';
 import confirmEmail from '../email/templates/confirm';
+import UserService from '../user/user.service';
 
 export default class SignUpService {
   static async registerUser(userData) {

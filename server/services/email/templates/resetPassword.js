@@ -3,7 +3,7 @@ const resetPassword = (id) => {
     subject: 'Reset Your Password',
     text: `Copy and paste this link in your browser to reset your password: ${process.env.CLIENT_URL}/password/reset/${id}`,
     html: `
-      <html>
+      <html lang="en">
         <body>
           <div>
             <h3>

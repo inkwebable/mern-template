@@ -1,9 +1,10 @@
 import dotenv from 'dotenv';
+
 import User from '../../models/user/User';
 
 dotenv.config();
 
-const authorise = roles => {
+const authorise = (roles) => {
   return async (req, res, next) => {
     // get id from previous middleware (authenticate)
     const { id, role } = req.user;

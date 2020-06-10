@@ -1,4 +1,5 @@
 import express from 'express';
+
 import User from '../models/user/User';
 
 const userController = express.Router();
@@ -21,10 +22,10 @@ userController.patch('/update', (req, res) => {
 
   try {
     User.findOneAndUpdate({ _id: req.user.id }, { name: req.body.name }, { new: true, runValidators: true })
-      .then(data => {
+      .then((data) => {
         return res.status(202).json(data);
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log(err.message);
         return res.status(400).send(err);
       });

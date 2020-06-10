@@ -1,22 +1,48 @@
 {
   "env": {
-    "browser": true,
+    "es6": true,
     "node": true,
     "jest": true
   },
-  "extends": ["airbnb", "plugin:prettier/recommended"],
-  "plugins": ["jest","prettier"],
+  "extends": [
+    "airbnb-base",
+    "plugin:security/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "jest",
+    "prettier",
+    "simple-import-sort"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
   "rules": {
+    "simple-import-sort/sort": "error",
     "eol-last": "off",
     "@typescript-eslint/no-unused-vars": "off",
+    "no-console": "warn",
     "no-param-reassign": "off",
     "no-unused-vars": "off",
     "no-use-before-define": "off",
     "no-underscore-dangle": "off",
-    "consistent-return": ["warn", { "treatUndefinedAsUnspecified": true }],
+    "consistent-return": [
+      "warn",
+      {
+        "treatUndefinedAsUnspecified": true
+      }
+    ],
     "react/jsx-one-expression-per-line": "off",
-    "prettier/prettier": ["error", {
-      "endOfLine":"auto"
-    }]
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ]
   }
 }

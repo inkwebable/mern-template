@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
 
 export default class TestDb {
   constructor() {
@@ -23,7 +23,7 @@ export default class TestDb {
     await mongoose
       .connect(url, options)
       .then(() => console.log('connected', url))
-      .catch(e => console.log('con error', e));
+      .catch((e) => console.log('con error', e));
   }
 
   async stop() {

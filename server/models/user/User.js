@@ -1,5 +1,6 @@
-import mongoose from 'mongoose';
 import { compareSync, hashSync } from 'bcryptjs';
+import mongoose from 'mongoose';
+
 import AppError from '../../utils/AppError';
 
 const UserSchema = new mongoose.Schema(
@@ -15,7 +16,7 @@ const UserSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
       validate: {
-        validator: email => User.doesNotExist({ email }),
+        validator: (email) => User.doesNotExist({ email }),
         message: 'Email already used.',
       },
     },
@@ -38,13 +39,13 @@ const UserSchema = new mongoose.Schema(
 );
 
 // middleware
-UserSchema.pre('save', function() {
+UserSchema.pre('save', function () {
   if (this.isModified('password')) {
     this.password = hashSync(this.password, 10);
   }
 });
 
-UserSchema.pre('updateOne', async function() {
+UserSchema.pre('updateOne', async function () {
   // console.log('updateOne');
   // console.log('updateOn query criteria', this.getQuery());
   // console.log(this._update, this._update.$set.password);
@@ -55,7 +56,7 @@ UserSchema.pre('updateOne', async function() {
   }
 });
 
-UserSchema.pre('findOneAndUpdate', async function() {
+UserSchema.pre('findOneAndUpdate', async function () {
   console.log('findOneAndUpdate', this._update.name);
   // The document that `findOneAndUpdate()` will modify
   // const docToUpdate = await this.model.findOne(this.getQuery());
@@ -65,7 +66,7 @@ UserSchema.pre('findOneAndUpdate', async function() {
   }
 });
 
-UserSchema.statics.doesNotExist = async function(field) {
+UserSchema.statics.doesNotExist = async function (field) {
   return (await this.where(field).countDocuments()) === 0;
 };
 
@@ -85,7 +86,7 @@ UserSchema.statics.findByCredentials = async ({ email, password }) => {
   return user;
 };
 
-UserSchema.methods.comparePasswords = function(password) {
+UserSchema.methods.comparePasswords = function (password) {
   return compareSync(password, this.password);
 };
 

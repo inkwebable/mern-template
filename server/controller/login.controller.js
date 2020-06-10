@@ -1,9 +1,10 @@
 import express from 'express';
-import { generateToken, generateRefreshToken } from '../utils/generateToken';
+
 import User from '../models/user/User';
-import generateAuthCookies from '../utils/generateAuthCookies';
-import { catchAsync } from '../utils/errorHandling';
 import AppError from '../utils/AppError';
+import { catchAsync } from '../utils/errorHandling';
+import generateAuthCookies from '../utils/generateAuthCookies';
+import { generateRefreshToken, generateToken } from '../utils/generateToken';
 
 const loginController = express.Router();
 

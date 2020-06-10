@@ -1,6 +1,7 @@
 import express from 'express';
-import User from '../models/user/User';
+
 import { authorise } from '../middleware/auth';
+import User from '../models/user/User';
 
 const usersController = express.Router();
 
@@ -28,10 +29,10 @@ usersController.patch('/update/:id', [authorise(['admin'])], (req, res) => {
       { name: req.body.name },
       { new: true, runValidators: true, fields: { password: 0 } },
     )
-      .then(data => {
+      .then((data) => {
         return res.status(202).json(data);
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log(err.message);
         return res.status(400).send(err);
       });
@@ -49,10 +50,10 @@ usersController.delete('/delete/:id', [authorise(['admin'])], (req, res) => {
 
   try {
     User.findOneAndDelete({ _id: req.params.id })
-      .then(data => {
+      .then((data) => {
         return res.json(data);
       })
-      .catch(err => {
+      .catch((err) => {
         return res.status(400).send(err);
       });
   } catch (err) {

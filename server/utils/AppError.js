@@ -9,7 +9,15 @@ class AppError extends Error {
     this.errors = errors;
     this.message = message;
 
-    Error.captureStackTrace(this, this.constructor);
+    if ({}.hasOwnProperty.call(Error, 'captureStackTrace')) {
+      Error.captureStackTrace(this, this.constructor);
+    } else {
+      Object.defineProperty(this, 'stack', {
+        value: new Error().stack,
+      });
+    }
+
+    // Error.captureStackTrace(this, this.constructor);
   }
 }
 

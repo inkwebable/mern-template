@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, it } from '@jest/globals';
 
-import UserService from './user.service';
 import TestDb from '../../utils/TestDb';
+import UserService from './user.service';
 
 const dbHelper = new TestDb();
 

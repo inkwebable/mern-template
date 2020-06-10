@@ -1,12 +1,12 @@
-import express from 'express';
-import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import helmet from 'helmet';
-import path from 'path';
+import express from 'express';
 import mongoSanitize from 'express-mongo-sanitize';
-
 import { ValidationError } from 'express-validation';
+import helmet from 'helmet';
+import mongoose from 'mongoose';
+import path from 'path';
+
 import apiRouter from './routes';
 import {
   handleCastErrorDB,
@@ -19,7 +19,7 @@ import {
 
 const app = express();
 
-console.log('express started - node env:', process.env.NODE_ENV);
+console.log('express started - NODE ENV:', process.env.NODE_ENV);
 
 app.use(helmet());
 app.use(express.json());
@@ -38,6 +38,9 @@ app.use('/api', apiRouter);
 app.use((err, req, res, next) => {
   console.log('main error handler', err);
   let error = { ...err };
+  if (!{}.hasOwnProperty.call(error, 'message')) {
+    error.message = err.message;
+  }
   if (err instanceof ValidationError) error = handleExpressValidationError(error);
   if (error.name === 'CastError') error = handleCastErrorDB(error);
   if (error.code === 11000) error = handleDuplicateFieldsDB(error);
@@ -87,7 +90,7 @@ if (process.env.NODE_ENV !== 'test') {
     .then(() => {
       console.log(`Connected to mongoDB `, process.env.DB_ENV);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log('dbConnectionURL ', dbConnectionURL);
       console.log('mongo connection err', err);
     });
