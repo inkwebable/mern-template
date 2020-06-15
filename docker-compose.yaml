@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.6'
 
 services:
   api:
@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile.dev
       context: ./server
     volumes:
-    - /usr/src/app/node_modules # Inside the container, don't try to override this folder, just leave as is
+    - api_node_modules:/usr/src/app/node_modules # Inside the container, don't try to override this folder, just leave as is
     - ./server:/usr/src/app
     ports:
       - 5001:5001
@@ -20,7 +20,7 @@ services:
       dockerfile: Dockerfile.dev
       context: ./client
     volumes:
-      - /usr/src/app/node_modules # Inside the container, don't try to override this folder, just leave as is
+      - client_node_modules:/usr/src/app/node_modules # Inside the container, don't try to override this folder, just leave as is
       - ./client:/usr/src/app
     ports:
       - 3000:3000
@@ -58,3 +58,5 @@ networks:
     driver: bridge
 volumes:
   mongodata:
+  api_node_modules:
+  client_node_modules:
