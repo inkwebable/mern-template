@@ -14,7 +14,7 @@ export const ProfilePage = (): JSX.Element => {
     if (!submitted) {
       axios
         .get(APIUser.Index)
-        .then(res => {
+        .then((res) => {
           if (res.status === 200) {
             setUserProfile({ name: res.data.user.name });
           } else {
@@ -24,7 +24,7 @@ export const ProfilePage = (): JSX.Element => {
           setSubmitted(true);
           setloadingProfile(false);
         })
-        .catch(err => {
+        .catch((err) => {
           setError(err.response.data.error);
           setSubmitted(true);
           setloadingProfile(false);
@@ -36,5 +36,5 @@ export const ProfilePage = (): JSX.Element => {
     return <p>{error}</p>;
   }
 
-  return <>{loadingProfile ? <p>Loading</p> : <PageTitle1>Welcome {userProfile.name}</PageTitle1>}</>;
+  return <>{loadingProfile ? <p>Loading</p> : <PageTitle1>Welcome{userProfile.name}</PageTitle1>}</>;
 };

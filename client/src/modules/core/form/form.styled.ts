@@ -1,6 +1,7 @@
+import { rem } from 'polished';
 import styled from 'styled-components';
 
-import { colors, fontSizes, rem, spacers } from '../../../assets/styles/settings';
+import { colors, fontSizes, spacers } from '../../../assets/styles/settings';
 
 export const FormContainer = styled.div`
   display: flex;

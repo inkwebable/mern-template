@@ -1,2 +1,2 @@
-export { SessionContext } from './sessionContext';
 export { hasSession } from './hasSession';
+export { SessionContext } from './sessionContext';

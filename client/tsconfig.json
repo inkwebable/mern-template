@@ -18,10 +18,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "rootDir": "./src",
     "baseUrl": "src",
-    "outDir": "./dist/"
+    "outDir": "./dist/",
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "src"

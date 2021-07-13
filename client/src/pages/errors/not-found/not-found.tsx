@@ -6,7 +6,7 @@ export const NotFoundPage: FunctionComponent = (): JSX.Element => {
 
   return (
     <div>
-      <p>We&rsquo;re sorry, but the page you&rsquo;ve tried to visit {location.pathname} cannot be found.</p>
+      <p>We&rsquo;re sorry, but the page you&rsquo;ve tried to visit{location.pathname} cannot be found.</p>
     </div>
   );
 };

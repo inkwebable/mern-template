@@ -13,7 +13,7 @@ export const PasswordResetPage: React.FunctionComponent = (): JSX.Element => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
 
-  const { id } = useParams();
+  const { id } = useParams<{ id?: string | undefined }>();
 
   useEffect(() => {
     if (!submitted) {

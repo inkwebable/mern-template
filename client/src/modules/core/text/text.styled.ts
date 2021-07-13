@@ -1,6 +1,7 @@
+import { rem } from 'polished';
 import styled from 'styled-components';
 
-import { colors, rem } from '../../../assets/styles/settings';
+import { colors } from '../../../assets/styles/settings';
 
 interface TextProps {
   color?: string;

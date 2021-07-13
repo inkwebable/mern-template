@@ -6,11 +6,11 @@ import React, { FunctionComponent, SetStateAction, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { colors } from '../../assets/styles/settings';
+import { APIPassword } from '../../shared/const';
 import { StyledFloatButton } from '../core/buttons';
 import { FormContainer, FormGroup } from '../core/form';
 import { StyledText } from '../core/text';
 import { ResetPasswordSchema } from './resetPasswordForm.schema';
-import { APIPassword } from '../../shared/const';
 
 interface ResetPasswordFormValues {
   password: string;
@@ -26,10 +26,10 @@ export const ResetPasswordForm: FunctionComponent<ResetPasswordFormProps> = ({ s
   const [errors, setErrors] = useState<Array<any>>([]);
   const [error, setError] = useState<string>('');
 
-  const { id } = useParams();
+  const { id } = useParams<{ id?: string | undefined }>();
 
   const hasErrorKey = (key: string): boolean => {
-    return errors.filter(err => err.key === key).length > 0;
+    return errors.filter((err) => err.key === key).length > 0;
   };
 
   const getErrorStyle = (key: string, formikErrors: FormikErrors<ResetPasswordFormValues>) => {
@@ -49,13 +49,13 @@ export const ResetPasswordForm: FunctionComponent<ResetPasswordFormProps> = ({ s
 
     axios
       .put(`${APIPassword.Reset}/${id}`, { password })
-      .then(res => {
+      .then((res) => {
         setSubmitting(false);
         if (res.status === 200) {
           setShowForm(false);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         if (err.response.status === 422) {
           setErrors(err.response.data.errors);
         } else {
@@ -97,7 +97,7 @@ export const ResetPasswordForm: FunctionComponent<ResetPasswordFormProps> = ({ s
               {errors.length > 0 && (
                 <>
                   <FormGroup>
-                    {errors.map(err => (
+                    {errors.map((err) => (
                       <StyledText key={err.key}>{err.message}</StyledText>
                     ))}
                   </FormGroup>

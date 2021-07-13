@@ -4,9 +4,10 @@
         "es6": true
     },
     "extends": [
-        "plugin:react/recommended",
+        "react-app", // Create React App base settings
+        "eslint:recommended", // recommended ESLint rules
         "plugin:@typescript-eslint/recommended",  // Uses the recommended rules from @typescript-eslint/eslint-plugin
-        "prettier/@typescript-eslint",  // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
+        "prettier", // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
         "plugin:prettier/recommended"  // Enables eslint-plugin-prettier and displays prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
     ],
     "globals": {
@@ -22,19 +23,15 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react",
-        "@typescript-eslint",
-        "prettier",
         "simple-import-sort"
     ],
     "rules": {
-        "simple-import-sort/sort": "error",
+        "simple-import-sort/imports": "error",
+        "simple-import-sort/exports": "error",
         "react/prop-types": 0,
         "react/jsx-props-no-spreading": "off",
         "@typescript-eslint/no-empty-function": "off",
         "@typscript-eslint/explicit-function-return-type": "off",
-        "import/extensions": "off",
-        "import/prefer-default-export": "off",
         "react/jsx-filename-extension": [0, { "extensions": [".js", ".jsx"] }],
         "@typescript-eslint/no-unused-vars": "off",
         "react/jsx-one-expression-per-line": [1, { "allow": "single-child" }]

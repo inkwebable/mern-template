@@ -1,5 +1,6 @@
-import { rem } from '../utils';
-import { lineHeightPx } from './_typography';
+import { rem } from 'polished';
+
+import { lineHeightPx } from './_typography-settings';
 
 const spacer = lineHeightPx / 4;
 const range = 8;

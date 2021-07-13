@@ -20,7 +20,8 @@ export const HomePage = (): JSX.Element => {
         </>
       ) : (
         <p>
-          You can login <Link to={AppRoutes.Login.Index}>here</Link> or <Link to={AppRoutes.SignUp.Index}>Sign up</Link> if you don&apos;t have an account
+          You can login <Link to={AppRoutes.Login.Index}>here</Link> or <Link to={AppRoutes.SignUp.Index}>Sign up</Link> if you don&apos;t
+          have an account
         </p>
       )}
     </>

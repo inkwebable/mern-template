@@ -2,11 +2,11 @@ import axios from 'axios';
 import React, { SetStateAction, useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { APILogin } from '../../shared/const';
+import AppRoutes from '../../shared/const/routes';
 import { SessionContext } from '../auth/session';
 import { StyledFloatButton } from '../core/buttons';
 import { FormContainer, FormGroup } from '../core/form';
-import AppRoutes from '../../shared/const/routes';
-import { APILogin } from '../../shared/const';
 
 interface LoginFormProps {
   setError: React.Dispatch<SetStateAction<string>>;
@@ -27,14 +27,14 @@ export const LoginForm: React.FunctionComponent<LoginFormProps> = ({ setError })
 
     axios
       .post(APILogin.Index, { email, password }, { withCredentials: true })
-      .then(res => {
+      .then((res) => {
         if (res.status === 200) {
           setSubmitting(false);
           sessionContext.updateSession(true);
           history.push(AppRoutes.Home.Index);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         if (err.response.data && {}.hasOwnProperty.call(err.response.data, 'message')) {
           setError(err.response.data.message);
         } else {

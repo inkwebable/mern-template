@@ -1,2 +1,2 @@
-export { VerifyEmailForm } from './verifyEmailForm';
 export { VerifyEmailFormSchema } from './veriftEmailForm.schema';
+export { VerifyEmailForm } from './verifyEmailForm';

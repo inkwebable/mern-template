@@ -13,7 +13,7 @@ export const ConfirmationPage: React.FunctionComponent = (): JSX.Element => {
   const [invalidToken, setInvalidToken] = useState<boolean>(false);
   const [noUser, hasNoUser] = useState<boolean>(false);
 
-  const { id } = useParams();
+  const { id } = useParams<{ id?: string | undefined }>();
 
   useEffect(() => {
     if (!submitting) {
