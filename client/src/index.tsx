@@ -2,8 +2,8 @@ import axios from 'axios';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './App';
-import getHistory from './utils/history';
+import App from './app/App';
+import getHistory from './shared/helpers/get-history';
 
 axios.interceptors.response.use(undefined, (error) => {
   const history = getHistory();

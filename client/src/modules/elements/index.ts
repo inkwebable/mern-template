@@ -1,1 +1,0 @@
-export { StyledSpaLink } from './spaLink';
