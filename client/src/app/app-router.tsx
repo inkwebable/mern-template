@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { Route, Switch, useLocation } from 'react-router-dom';
 
 import { hasSession, SessionContext } from '../modules/auth/session';
+import MqttConnector from '../modules/mqtt/mqtt-connector';
 import { SecureRoute } from '../modules/secureRoute';
 import {
   ConfirmationPage,
@@ -33,9 +34,11 @@ export const AppRouter = (): JSX.Element => {
       <Route exact key={AppRoutes.SignUp.Index} path={AppRoutes.SignUp.Index} component={SignUpPage} />
       <Route exact key={AppRoutes.SignUp.Resend} path={AppRoutes.SignUp.Resend} component={ResendPage} />
       <Route exact key={AppRoutes.SignUp.Confirm} path={AppRoutes.SignUp.Confirm} component={ConfirmationPage} />
-      <SecureRoute exact key={AppRoutes.Profile.Index} path={AppRoutes.Profile.Index}>
-        <ProfilePage />
-      </SecureRoute>
+      <MqttConnector>
+        <SecureRoute exact key={AppRoutes.Profile.Index} path={AppRoutes.Profile.Index}>
+          <ProfilePage />
+        </SecureRoute>
+      </MqttConnector>
       <Route path="*" component={NotFoundPage} />
     </Switch>
   );

@@ -1,14 +1,27 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
+import useMqttSub from '../../modules/mqtt/useMqttSub';
 import { PageTitle1 } from '../../modules/page/pages.styled';
 import { APIUser } from '../../shared/const';
 
 export const ProfilePage = (): JSX.Element => {
   const [userProfile, setUserProfile] = useState({ name: '' });
   const [submitted, setSubmitted] = useState<boolean>(false);
+  const [showStar, setShowStar] = useState<boolean>(false);
   const [loadingProfile, setloadingProfile] = useState(true);
   const [error, setError] = useState<string>('');
+  const { message } = useMqttSub([`MERN/evt/star`]);
+
+  useEffect(() => {
+    if (message) {
+      setShowStar(true);
+    }
+
+    if (!message) {
+      setShowStar(false);
+    }
+  }, [message]);
 
   useEffect(() => {
     if (!submitted) {
@@ -36,5 +49,18 @@ export const ProfilePage = (): JSX.Element => {
     return <p>{error}</p>;
   }
 
-  return <>{loadingProfile ? <p>Loading</p> : <PageTitle1>Welcome{userProfile.name}</PageTitle1>}</>;
+  // eslint-disable-next-line react/jsx-one-expression-per-line
+  return (
+    <>
+      {loadingProfile ? (
+        <p>Loading</p>
+      ) : (
+        <PageTitle1>
+          Welcome to your profile
+          {userProfile.name}
+        </PageTitle1>
+      )}
+      {showStar && <p>You are a Star</p>}
+    </>
+  );
 };
