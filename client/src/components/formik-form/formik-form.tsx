@@ -32,6 +32,7 @@ export interface FormikFormField {
   getOptions?: () => Promise<any>;
   options?: FormikFormFieldOption[] | null;
   optionsDataKey?: string;
+  optionsDataNotObject?: boolean;
   SelectProps?: any;
   disabled?: boolean;
   open?: boolean;
@@ -85,43 +86,43 @@ const FormikForm: FunctionComponent<FormikFormProps> = ({
   const defaultButtonStyles = { padding: '8px 15px', margin: '7px' };
   const defaultErrorStyles = { width: '100%', padding: '10px 0', color: 'red', fontSize: '12px' };
 
-  const fetchOptions = useCallback(async (item, value?: string): Promise<void> => {
-    let options = item.options as FormikFormFieldOption[] | null;
+  const fetchOptions = useCallback(async (field, value?: string): Promise<void> => {
+    let options = field.options as FormikFormFieldOption[] | null;
     let requestOptions = null;
     try {
-      setLoading({ [item.id]: true });
-      const optionsData = await item.getOptions(value ? value : item.value);
-      if (item.optionsDataKey) {
+      setLoading({ [field.id]: true });
+      const optionsData = await field.getOptions(value ? value : field.value);
+      if (field.optionsDataKey) {
         requestOptions =
-          optionsData && optionsData?.data[item.optionsDataKey].length > 0
-            ? optionsData.data[item.optionsDataKey].map((item: any) => ({
-                val: item.id,
-                name: item.name,
+          optionsData && optionsData?.data[field.optionsDataKey].length > 0
+            ? optionsData.data[field.optionsDataKey].map((option: any) => ({
+                val: field?.optionsDataNotObject && field.optionsDataNotObject ? option : option.id,
+                name: field?.optionsDataNotObject && field.optionsDataNotObject ? option : option.name,
               }))
             : [];
       } else {
         requestOptions =
           optionsData && optionsData?.data.length > 0
-            ? optionsData.data.map((item: any) => ({
-                val: item.id,
-                name: item.name,
+            ? optionsData.data.map((option: any) => ({
+                val: field?.optionsDataNotObject && field.optionsDataNotObject ? option : option.id,
+                name: field?.optionsDataNotObject && field.optionsDataNotObject ? option : option.name,
               }))
             : [];
       }
 
       if (options != null && options.length > 0 && requestOptions != null) {
-        options = [...item.options, ...requestOptions];
+        options = [...field.options, ...requestOptions];
       } else {
         options = requestOptions;
       }
-      setLoading({ [item.id]: false });
+      setLoading({ [field.id]: false });
       setFieldOptions((prevState) => {
-        return { ...prevState, ...{ [item.id]: options } };
+        return { ...prevState, ...{ [field.id]: options } };
       });
     } catch (e) {
-      setLoading({ [item.id]: false });
+      setLoading({ [field.id]: false });
       setFieldOptions((prevState) => {
-        return { ...prevState, ...{ [item.id]: options } };
+        return { ...prevState, ...{ [field.id]: options } };
       });
     }
   }, []);
